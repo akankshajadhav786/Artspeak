@@ -6,11 +6,19 @@ import math
 from pathlib import Path
 
 from fastapi import FastAPI, Header, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from supabase import Client, create_client
 
 from services.inference_engine.process_session import process_session
 
 app = FastAPI(title="ArtSpeak Inference API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_admin_client() -> Client:
