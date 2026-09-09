@@ -3,6 +3,7 @@
 import os
 import tempfile
 import math
+import traceback
 from pathlib import Path
 
 from fastapi import FastAPI, Header, HTTPException
@@ -106,4 +107,8 @@ def process(session_id: str, authorization: str | None = Header(default=None)):
         return {"session_id": session_id, "status": "completed"}
     except Exception as error:
         client.table("sessions").update({"status": "failed"}).eq("id", session_id).execute()
-        raise HTTPException(status_code=500, detail=str(error)) from error
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Inference processing failed: {type(error).__name__}: {error}",
+        ) from error

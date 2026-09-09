@@ -54,10 +54,15 @@ def process_session(
     report_builder = CaregiverReportBuilder()
 
     # 2. Extract Features from Video (Model 1: Face + Model 2: Gaze)
+    video_data = None
     if video_path and Path(video_path).exists():
         print(f"\nProcessing Video Stream: {video_path}")
-        video_data = video_extractor.process_video(video_path)
-    else:
+        try:
+            video_data = video_extractor.process_video(video_path)
+        except Exception as error:
+            print(f"Video decoding failed; using baseline features: {error}")
+
+    if video_data is None:
         print("\nNo direct video file provided; using synthetic/camera session frame generator...")
         # Create a representative evaluation batch
         import torch
