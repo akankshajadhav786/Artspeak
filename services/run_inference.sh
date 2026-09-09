@@ -2,11 +2,9 @@
 set -euo pipefail
 
 repo_root="${0:A:h}/.."
-while IFS='=' read -r name value; do
-	[[ -z "$name" || "$name" == \#* ]] && continue
-	value="${value##[[:space:]]#}"
-	export "$name=$value"
-done < "$repo_root/.env.inference"
+set -a
+source <(sed -E '/^[[:space:]]*#/d; /^[[:space:]]*$/d; s/^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*=[[:space:]]*(.*)$/\1="\2"/' "$repo_root/.env.inference")
+set +a
 
 cd "$repo_root"
 if [[ -x "$repo_root/.venv-ml/bin/uvicorn" ]]; then
