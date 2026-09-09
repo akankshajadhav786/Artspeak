@@ -1,6 +1,6 @@
 {
-    "name": "artspeak",
-    "short_name": "artspeak",
+    "name": "artspeak_flutter",
+    "short_name": "artspeak_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -93,3 +93,29 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Local and sensitive configuration
+config/*.env
+config/.env*
+**/local.properties
+frontend/ios/Flutter/ephemeral/
+frontend/ios/Flutter/Generated.xcconfig
+frontend/ios/Flutter/flutter_export_environment.sh
+
+# Research datasets and generated data
+data_prep/**/*.csv
+data_prep/**/*.tsv
+data_prep/**/*.json
+data_prep/**/raw_data/
+data_prep/**/MEFAR_raw_data/
+
+# Trained model artifacts
+ml-models/**/*.joblib
+ml-models/**/*.pth
+ml-models/**/model/
+ml-models/**/pipeline_output/
+ml-models/**/demo_output/
+ml-models/**/results/
+
+# Session reports may contain participant information
+reports/
