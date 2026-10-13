@@ -5,7 +5,9 @@ import '../models/session_record.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'patient_report_screen.dart';
+import 'welcome_screen.dart';
 import '../services/art_speak_repository.dart';
+import '../utils/app_date_time.dart';
 
 class TherapistDashboardScreen extends StatefulWidget {
   const TherapistDashboardScreen({super.key});
@@ -27,6 +29,15 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
   Future<void> _loadRoster() async {
     try {
       final loaded = await artSpeakRepository.loadTherapistRoster();
+      loaded.sort((a, b) {
+        final aDate = a.sessions.isNotEmpty
+            ? a.sessions.map((s) => s.date).reduce((x, y) => x.isAfter(y) ? x : y)
+            : DateTime.fromMillisecondsSinceEpoch(0);
+        final bDate = b.sessions.isNotEmpty
+            ? b.sessions.map((s) => s.date).reduce((x, y) => x.isAfter(y) ? x : y)
+            : DateTime.fromMillisecondsSinceEpoch(0);
+        return bDate.compareTo(aDate);
+      });
       if (mounted) setState(() { roster = loaded; loading = false; });
     } catch (error) {
       if (mounted) {
@@ -44,7 +55,17 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
     return Scaffold(
       backgroundColor: AppColors.bgTop,
       appBar: const AppHeader(subtitle: 'Therapist Dashboard'),
-      bottomNavigationBar: AppFooter(onLogout: () => Navigator.of(context).popUntil((r) => r.isFirst)),
+      bottomNavigationBar: AppFooter(
+        onLogout: () async {
+          await artSpeakRepository.signOut();
+          if (context.mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+              (r) => false,
+            );
+          }
+        },
+      ),
       body: loading ? const Center(child: CircularProgressIndicator()) : ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -72,7 +93,12 @@ class _TherapistDashboardScreenState extends State<TherapistDashboardScreen> {
           const SizedBox(height: 16),
           ...roster.map((c) => _PatientTile(
                 profile: c,
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PatientReportScreen(profile: c))),
+                onTap: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => PatientReportScreen(profile: c)),
+                  );
+                  _loadRoster();
+                },
               )),
         ],
       ),
@@ -114,6 +140,7 @@ class _PatientTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasAlert = profile.sessions.any((s) => s.distressAlert);
     final latest = profile.sessions.isNotEmpty ? profile.sessions.last : null;
+
     return Material(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
@@ -123,6 +150,11 @@ class _PatientTile extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFE2E8F0)),
+          ),
           child: Row(
             children: [
               CircleAvatar(
@@ -141,7 +173,7 @@ class _PatientTile extends StatelessWidget {
                         style: GoogleFonts.nunito(fontSize: 12.5, color: AppColors.textMuted)),
                     if (latest != null) ...[
                       const SizedBox(height: 4),
-                      Text('Last session: ${latest.mood.label}',
+                      Text('Last session (${AppDateTime.formatShortDateIst(latest.date)}): ${latest.mood.label}',
                           style: GoogleFonts.nunito(fontSize: 12.5, color: latest.mood.color, fontWeight: FontWeight.w700)),
                     ],
                   ],

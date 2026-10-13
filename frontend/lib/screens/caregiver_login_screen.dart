@@ -3,8 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import '../services/art_speak_repository.dart';
+import '../services/app_auth_cache.dart';
 import 'caregiver_signup_screen.dart';
 import 'child_details_screen.dart';
+import 'caregiver_dashboard_screen.dart';
 import 'welcome_screen.dart';
 
 class CaregiverLoginScreen extends StatefulWidget {
@@ -20,13 +22,51 @@ class _CaregiverLoginScreenState extends State<CaregiverLoginScreen> {
   bool get _validEmail => RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(_emailCtrl.text.trim());
   bool get _canContinue => _validEmail && _passCtrl.text.length >= 6;
   bool _busy = false;
+  bool _rememberMe = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCachedEmail();
+  }
+
+  Future<void> _loadCachedEmail() async {
+    final cached = await AppAuthCache.getCaregiverEmail();
+    final remember = await AppAuthCache.isRememberMe();
+    if (cached != null && cached.isNotEmpty && mounted) {
+      setState(() {
+        _emailCtrl.text = cached;
+        _rememberMe = remember;
+      });
+    }
+  }
 
   Future<void> _login() async {
     setState(() => _busy = true);
     try {
-      await artSpeakRepository.signIn(email: _emailCtrl.text.trim(), password: _passCtrl.text);
+      final email = _emailCtrl.text.trim();
+      await artSpeakRepository.signIn(email: email, password: _passCtrl.text);
+
+      if (_rememberMe) {
+        await AppAuthCache.saveCaregiverEmail(email);
+        await AppAuthCache.setRememberMe(true);
+      } else {
+        await AppAuthCache.clearAuthCache();
+        await AppAuthCache.setRememberMe(false);
+      }
+
       if (!mounted) return;
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const ChildDetailsScreen()));
+      final children = await artSpeakRepository.loadCaregiverChildren();
+      if (!mounted) return;
+      if (children.isNotEmpty) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => CaregiverDashboardScreen(initialProfile: children.first, allProfiles: children)),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ChildDetailsScreen()),
+        );
+      }
     } catch (error) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(artSpeakRepository.authErrorMessage(error))));
     } finally {
@@ -90,7 +130,30 @@ class _CaregiverLoginScreenState extends State<CaregiverLoginScreen> {
                             errorText: _passCtrl.text.isNotEmpty && _passCtrl.text.length < 6 ? 'Use at least 6 characters' : null,
                           ),
                         ),
-                        const SizedBox(height: 26),
+                        const SizedBox(height: 14),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Checkbox(
+                                value: _rememberMe,
+                                activeColor: AppColors.primary,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                onChanged: (v) => setState(() => _rememberMe = v ?? true),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () => setState(() => _rememberMe = !_rememberMe),
+                              child: Text(
+                                'Remember my email on this device',
+                                style: GoogleFonts.nunito(fontSize: 13, color: AppColors.textDark, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                         PrimaryButton(
                           label: 'Continue',
                           enabled: _canContinue,

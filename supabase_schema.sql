@@ -121,7 +121,7 @@ create table if not exists public.children (
   id uuid primary key default gen_random_uuid(),
   caregiver_id uuid not null references public.caregivers(id) on delete cascade,
   name text not null,
-  age integer not null check (age between 1 and 21),
+  age integer not null check (age between 4 and 13),
   gender text check (gender in ('Male', 'Female', 'Non-binary', 'Prefer not to say')),
   conditions text[] not null default '{}',           -- e.g. {'Autism Spectrum Disorder','ADHD'}
   hobbies text[] not null default '{}',               -- e.g. {'trains','drawing animals'}
@@ -204,6 +204,9 @@ create table if not exists public.sessions (
 
   video_duration_seconds integer not null default 10,
   art_duration_seconds integer not null default 15,
+  stimulus_category text check (stimulus_category in ('animals', 'nature', 'objects', 'people')),
+  stimulus_image_id text,
+  stimulus_duration_seconds integer not null default 10,
   status text not null default 'recording'
     check (status in ('recording', 'processing', 'completed', 'failed')),
 
@@ -211,6 +214,8 @@ create table if not exists public.sessions (
   ended_at timestamptz,
   created_at timestamptz not null default now()
 );
+
+create index if not exists idx_sessions_stimulus_cat on public.sessions(stimulus_category);
 
 create index if not exists idx_sessions_caregiver on public.sessions(caregiver_id);
 create index if not exists idx_sessions_child on public.sessions(child_id);
@@ -333,6 +338,11 @@ create table if not exists public.session_reports (
   distress_alerts text[] not null default '{}',
   report_markdown text not null,
   raw_report_json jsonb not null,
+
+  stimulus_category text,
+  stimulus_image_id text,
+  stimulus_reaction_summary text,
+  simple_language_report text,
 
   routed_to text not null check (routed_to in ('caregiver', 'therapist')),
 

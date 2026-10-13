@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ArtSpeak records video during art therapy sessions to analyze engagement and affective responses.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ArtSpeak captures audio during art therapy sessions.</string>
 </dict>
 </plist>

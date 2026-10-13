@@ -37,6 +37,8 @@ def process_session(
     e4_events: list = None,
     duration_minutes: int = 10,
     out_dir: str = "reports",
+    stimulus_info: dict = None,
+    drawing_reference: str = "sun",
 ) -> dict:
     out_path = Path(out_dir)
     out_path.mkdir(parents=True, exist_ok=True)
@@ -112,8 +114,8 @@ def process_session(
     physio_pred = engine.predict_physiological_stress(e4_df)
     print(f"  [Model 4 - E4 Stress]    Status: {physio_pred['status']} (Stress Prob: {physio_pred['stress_probability']*100:.1f}%)")
 
-    # 6. Build Caregiver Report
-    print("\nSynthesizing Caregiver Report...")
+    # 6. Build Caregiver Report (Fused Multi-Model & LLM Report Generation)
+    print("\nSynthesizing Caregiver Report (Multi-Model & LLM)...")
     report = report_builder.build_report(
         session_id=session_id,
         duration_minutes=duration_minutes,
@@ -121,7 +123,15 @@ def process_session(
         gaze_pred=gaze_pred,
         touch_pred=touch_pred,
         physio_pred=physio_pred,
+        stimulus_info=stimulus_info,
+        drawing_reference=drawing_reference,
     )
+
+    # Attach raw model predictions for database insertion and downstream tracking
+    report["facial_prediction"] = face_pred
+    report["gaze_prediction"] = gaze_pred
+    report["touch_prediction"] = touch_pred
+    report["physio_prediction"] = physio_pred
 
     # Save JSON Report
     report_json_path = out_path / f"{session_id}_report.json"

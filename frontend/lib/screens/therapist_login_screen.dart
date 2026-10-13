@@ -6,6 +6,7 @@ import 'therapist_dashboard_screen.dart';
 import 'therapist_signup_screen.dart';
 import 'welcome_screen.dart';
 import '../services/art_speak_repository.dart';
+import '../services/app_auth_cache.dart';
 
 class TherapistLoginScreen extends StatefulWidget {
   const TherapistLoginScreen({super.key});
@@ -20,11 +21,39 @@ class _TherapistLoginScreenState extends State<TherapistLoginScreen> {
 
   bool get _canSubmit => _usernameCtrl.text.trim().isNotEmpty && _passCtrl.text.trim().isNotEmpty;
   bool _busy = false;
+  bool _rememberMe = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCachedUsername();
+  }
+
+  Future<void> _loadCachedUsername() async {
+    final cached = await AppAuthCache.getTherapistUsername();
+    final remember = await AppAuthCache.isRememberMe();
+    if (cached != null && cached.isNotEmpty && mounted) {
+      setState(() {
+        _usernameCtrl.text = cached;
+        _rememberMe = remember;
+      });
+    }
+  }
 
   Future<void> _login() async {
     setState(() => _busy = true);
     try {
-      await artSpeakRepository.signInTherapist(username: _usernameCtrl.text.trim(), password: _passCtrl.text);
+      final username = _usernameCtrl.text.trim();
+      await artSpeakRepository.signInTherapist(username: username, password: _passCtrl.text);
+
+      if (_rememberMe) {
+        await AppAuthCache.saveTherapistUsername(username);
+        await AppAuthCache.setRememberMe(true);
+      } else {
+        await AppAuthCache.clearAuthCache();
+        await AppAuthCache.setRememberMe(false);
+      }
+
       if (mounted) Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const TherapistDashboardScreen()));
     } catch (error) {
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
@@ -98,7 +127,30 @@ class _TherapistLoginScreenState extends State<TherapistLoginScreen> {
                           'Use the credentials provided by your administrator after sign up.',
                           style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted, fontStyle: FontStyle.italic),
                         ),
-                        const SizedBox(height: 26),
+                        const SizedBox(height: 14),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Checkbox(
+                                value: _rememberMe,
+                                activeColor: AppColors.primary,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                onChanged: (v) => setState(() => _rememberMe = v ?? true),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () => setState(() => _rememberMe = !_rememberMe),
+                              child: Text(
+                                'Remember my username on this device',
+                                style: GoogleFonts.nunito(fontSize: 13, color: AppColors.textDark, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                         PrimaryButton(
                           label: 'Sign In',
                           trailingIcon: null,

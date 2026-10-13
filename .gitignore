@@ -108,6 +108,7 @@ data_prep/**/*.tsv
 data_prep/**/*.json
 data_prep/**/raw_data/
 data_prep/**/MEFAR_raw_data/
+data_prep/GAPED/
 
 # Trained model artifacts
 ml-models/**/*.joblib

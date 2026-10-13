@@ -156,7 +156,37 @@ class MultimodalInferenceEngine:
                 "fixation_count": 12,
             }
 
-        df_gaze = pd.DataFrame([gaze_features])
+        cols = list(getattr(self.gaze_model, "feature_names_in_", []))
+        if not cols and hasattr(self.gaze_model, "named_steps"):
+            for step in self.gaze_model.named_steps.values():
+                if hasattr(step, "feature_names_in_"):
+                    cols = list(step.feature_names_in_)
+                    break
+        if not cols:
+            cols = [
+                "n_fixations", "mean_x_norm", "mean_y_norm", "spatial_spread",
+                "scanpath_length", "total_dwell_ms_log", "mean_fixation_ms_log",
+                "std_fixation_ms_log", "saccade_length_per_fixation", "dwell_per_fixation",
+                "fixation_variability_ratio", "center_dist", "exploration_density",
+                "spread_to_path_ratio", "dwell_spread_product", "fixation_entropy_proxy"
+            ]
+
+        defaults = {
+            "n_fixations": 10.0, "mean_x_norm": 0.5, "mean_y_norm": 0.5, "spatial_spread": 0.15,
+            "scanpath_length": 0.5, "total_dwell_ms_log": 8.0, "mean_fixation_ms_log": 5.5,
+            "std_fixation_ms_log": 4.5, "saccade_length_per_fixation": 0.05, "dwell_per_fixation": 0.8,
+            "fixation_variability_ratio": 0.8, "center_dist": 0.1, "exploration_density": 66.0,
+            "spread_to_path_ratio": 0.3, "dwell_spread_product": 1.2, "fixation_entropy_proxy": 0.12
+        }
+
+        row = {}
+        for c in cols:
+            val = gaze_features.get(c)
+            if val is None and c == "n_fixations" and "fixation_count" in gaze_features:
+                val = gaze_features["fixation_count"]
+            row[c] = float(val) if val is not None else float(defaults.get(c, 0.0))
+
+        df_gaze = pd.DataFrame([row], columns=cols)
         proba = self.gaze_model.predict_proba(df_gaze)[0]
         asd_prob = float(proba[1]) if len(proba) > 1 else float(proba[0])
 
@@ -165,9 +195,9 @@ class MultimodalInferenceEngine:
         return {
             "attention_profile": profile,
             "asd_probability": asd_prob,
-            "spatial_spread": float(gaze_features.get("spatial_spread", 0.15)),
-            "fixation_count": int(gaze_features.get("n_fixations", 10)),
-            "exploration_density": float(gaze_features.get("exploration_density", 1.0)),
+            "spatial_spread": float(row.get("spatial_spread", 0.15)),
+            "fixation_count": int(row.get("n_fixations", 10)),
+            "exploration_density": float(row.get("exploration_density", 1.0)),
         }
 
     def predict_touch_rhythm(self, touch_features: dict) -> dict:
@@ -205,6 +235,9 @@ class MultimodalInferenceEngine:
             "touch_valence": float(vad_pred[0]),
             "touch_arousal": float(vad_pred[1]),
             "touch_dominance": float(vad_pred[2]),
+            "features": touch_features,
+            "stroke_speed_avg": float(touch_features.get("avg_speed_px_s", 0.0)),
+            "pressure_avg": float(touch_features.get("avg_pressure", 0.5)),
         }
 
     def predict_physiological_stress(self, e4_df: pd.DataFrame) -> dict:

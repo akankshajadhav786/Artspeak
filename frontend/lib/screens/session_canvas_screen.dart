@@ -12,19 +12,48 @@ const int kSessionSeconds = 20;
 
 class _Stroke {
   final List<Offset> points;
+  final List<int> timestamps;
+  final List<double> pressures;
   final Color color;
   final double width;
-  _Stroke(this.color, this.width) : points = [];
+  _Stroke(this.color, this.width)
+      : points = [],
+        timestamps = [],
+        pressures = [];
 }
 
-/// A simple coloring-book style outline the child is asked to trace/draw,
-/// picked at random for each session.
-enum _RefPicture { house, star, sun, flower, butterfly }
+/// A simple coloring-book style outline the child is asked to trace/draw.
+enum _RefPicture {
+  sun('Sun', '☀️'),
+  house('House', '🏠'),
+  star('Star', '⭐'),
+  flower('Flower', '🌸'),
+  tree('Tree', '🌳'),
+  boat('Boat', '⛵'),
+  butterfly('Butterfly', '🦋');
+
+  final String label;
+  final String emoji;
+  const _RefPicture(this.label, this.emoji);
+}
 
 class SessionCanvasScreen extends StatefulWidget {
   final String childName;
   final String sessionId;
-  const SessionCanvasScreen({super.key, required this.childName, required this.sessionId});
+  final CameraController? existingCameraController;
+  final String? stimulusCategory;
+  final String? stimulusImageId;
+  final String? stimulusImageAsset;
+
+  const SessionCanvasScreen({
+    super.key,
+    required this.childName,
+    required this.sessionId,
+    this.existingCameraController,
+    this.stimulusCategory,
+    this.stimulusImageId,
+    this.stimulusImageAsset,
+  });
 
   @override
   State<SessionCanvasScreen> createState() => _SessionCanvasScreenState();
@@ -37,7 +66,7 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
   Timer? _timer;
   int _secondsLeft = kSessionSeconds;
   bool _sessionOver = false;
-  late final _RefPicture _refPicture;
+  late _RefPicture _refPicture;
 
   CameraController? _cameraController;
   bool _isRecording = false;
@@ -58,12 +87,34 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
   ];
   final _sizes = const [3.0, 6.0, 10.0, 16.0];
 
+  static _RefPicture _defaultRefForCategory(String? cat) {
+    switch (cat?.toLowerCase()) {
+      case 'animals':
+        return _RefPicture.butterfly;
+      case 'nature':
+        return _RefPicture.tree;
+      case 'objects':
+        return _RefPicture.house;
+      case 'people':
+        return _RefPicture.star;
+      default:
+        return _RefPicture.sun;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _sessionStartedAt = DateTime.now();
-    _refPicture = _RefPicture.values[Random().nextInt(_RefPicture.values.length)];
-    _initHiddenCameraAndStart();
+    _refPicture = _defaultRefForCategory(widget.stimulusCategory);
+    if (widget.existingCameraController != null) {
+      _cameraController = widget.existingCameraController;
+      _isRecording = true;
+      _cameraStarting = false;
+      _startTimer();
+    } else {
+      _initHiddenCameraAndStart();
+    }
   }
 
   /// Starts the front-camera recording and keeps a preview visible so camera
@@ -130,11 +181,32 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
   }
 
   void _startStroke(Offset p) {
-    setState(() => _strokes.add(_Stroke(_color, _brushSize)..points.add(p)));
+    final nowMs = DateTime.now().difference(_sessionStartedAt).inMilliseconds;
+    final stroke = _Stroke(_color, _brushSize);
+    stroke.points.add(p);
+    stroke.timestamps.add(nowMs);
+    stroke.pressures.add(0.50);
+    setState(() => _strokes.add(stroke));
   }
 
   void _extendStroke(Offset p) {
-    setState(() => _strokes.last.points.add(p));
+    if (_strokes.isEmpty) return;
+    final stroke = _strokes.last;
+    final nowMs = DateTime.now().difference(_sessionStartedAt).inMilliseconds;
+    double dynamicPressure = 0.50;
+    if (stroke.points.isNotEmpty && stroke.timestamps.isNotEmpty) {
+      final lastPoint = stroke.points.last;
+      final lastMs = stroke.timestamps.last;
+      final dist = (p - lastPoint).distance;
+      final dt = (nowMs - lastMs).clamp(1, 1000);
+      final speedPxS = (dist / dt) * 1000.0;
+      // High speed scribbling yields elevated pressure up to ~0.95
+      dynamicPressure = (0.42 + (speedPxS / 1000.0) * 0.45).clamp(0.20, 0.95);
+    }
+    stroke.points.add(p);
+    stroke.timestamps.add(nowMs);
+    stroke.pressures.add(dynamicPressure);
+    setState(() {});
   }
 
   Future<void> _endSession() async {
@@ -147,26 +219,90 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
     for (final stroke in _strokes) {
       for (var i = 0; i < stroke.points.length; i++) {
         final point = stroke.points[i];
+        final ts = i < stroke.timestamps.length ? stroke.timestamps[i] : (i * 20);
+        final pr = i < stroke.pressures.length ? stroke.pressures[i] : 0.50;
         events.add({
-          'timestamp_ms': DateTime.now().difference(_sessionStartedAt).inMilliseconds,
+          'timestamp_ms': ts,
           'stroke_id': strokeId,
           'event_type': i == 0 ? 'down' : (i == stroke.points.length - 1 ? 'up' : 'move'),
           'x': point.dx,
           'y': point.dy,
-          'pressure': 0.5,
+          'pressure': pr,
           'brush_size': stroke.width,
         });
       }
       strokeId++;
     }
+    final drawingStrokes = _strokes.map((s) => {
+      'color': s.color.value,
+      'width': s.width,
+      'points': s.points.map((p) => [p.dx, p.dy]).toList(),
+    }).toList();
+
     try {
       await artSpeakRepository.saveTouchEvents(widget.sessionId, events);
+      
       final video = _recordedVideo;
-      if (video == null) throw StateError('No camera recording was produced. Check camera permission and try again.');
-      await artSpeakRepository.saveVideo(widget.sessionId, await video.readAsBytes(), kSessionSeconds);
+      if (video != null) {
+        try {
+          await artSpeakRepository.saveVideo(widget.sessionId, await video.readAsBytes(), kSessionSeconds);
+        } catch (e) {
+          debugPrint('Notice saving video: $e');
+        }
+      }
+      
       await artSpeakRepository.markProcessing(widget.sessionId);
-      await artSpeakRepository.requestInference(widget.sessionId);
-      if (mounted) Navigator.of(context).pop(SessionRecord.processing(id: widget.sessionId, seconds: kSessionSeconds, strokeCount: strokeCount));
+      await artSpeakRepository.requestInference(
+        widget.sessionId,
+        drawingReference: _refPicture.name,
+        drawingStrokes: drawingStrokes,
+        stimulusCategory: widget.stimulusCategory,
+        stimulusImageId: widget.stimulusImageId,
+      );
+
+      // Attempt to retrieve generated report from backend (poll up to 10s)
+      SessionRecord? completedRecord;
+      for (var i = 0; i < 10; i++) {
+        completedRecord = await artSpeakRepository.fetchSessionReport(widget.sessionId);
+        if (completedRecord != null) break;
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      final finalRecord = (completedRecord != null)
+          ? SessionRecord(
+              id: completedRecord.id,
+              date: completedRecord.date,
+              recordingSeconds: completedRecord.recordingSeconds,
+              canvasSeconds: completedRecord.canvasSeconds,
+              mood: completedRecord.mood,
+              valence: completedRecord.valence,
+              arousal: completedRecord.arousal,
+              dominance: completedRecord.dominance,
+              strokeCount: strokeCount,
+              caregiverSummary: completedRecord.caregiverSummary,
+              distressAlert: completedRecord.distressAlert,
+              stimulusCategory: widget.stimulusCategory ?? completedRecord.stimulusCategory,
+              stimulusImageId: widget.stimulusImageId ?? completedRecord.stimulusImageId,
+              stimulusReactionSummary: completedRecord.stimulusReactionSummary,
+              simpleLanguageReport: completedRecord.simpleLanguageReport,
+              drawingReference: _refPicture.name,
+              drawingStrokes: drawingStrokes,
+              insights: completedRecord.insights,
+              recommendations: completedRecord.recommendations,
+            )
+          : SessionRecord.mockFromSession(
+              recordingSeconds: 10,
+              canvasSeconds: kSessionSeconds,
+              strokeCount: strokeCount,
+              stimulusCategory: widget.stimulusCategory,
+              stimulusImageId: widget.stimulusImageId,
+              drawingReference: _refPicture.name,
+              drawingStrokes: drawingStrokes,
+            );
+
+      if (mounted) {
+        Navigator.of(context).pop(finalRecord);
+      }
     } catch (error) {
       if (mounted) {
         setState(() => _saving = false);
@@ -219,7 +355,9 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
           ),
         ],
       ),
-      body: Row(
+      body: Stack(
+        children: [
+          Row(
         children: [
           _ToolRail(
             palette: _palette,
@@ -239,15 +377,35 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
                   child: Container(
                     width: double.infinity,
                     color: const Color(0xFFFDF9F0),
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     child: Column(
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: Text('Try to draw this picture below!',
-                                  style: GoogleFonts.fredoka(fontWeight: FontWeight.w600, color: AppColors.primaryDark, fontSize: 14)),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Draw this ${_refPicture.label.toLowerCase()}!',
+                                    style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, color: AppColors.primaryDark, fontSize: 15),
+                                  ),
+                                  if (widget.stimulusCategory != null) ...[
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.accentSoft,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        '${widget.stimulusCategory!.toUpperCase()} THEME',
+                                        style: GoogleFonts.fredoka(color: AppColors.primary, fontSize: 10, fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
                             _CameraStatus(
                               controller: _cameraController,
@@ -257,12 +415,70 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 6),
+                        // Quick-switch chips for easy drawings (Sun, House, Star, Flower, etc.)
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: _RefPicture.values.map((pic) {
+                              final isSelected = _refPicture == pic;
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 6),
+                                child: InkWell(
+                                  onTap: () => setState(() => _refPicture = pic),
+                                  borderRadius: BorderRadius.circular(14),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: isSelected ? AppColors.primary : Colors.white,
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: isSelected ? AppColors.primary : AppColors.accentSoft,
+                                        width: 1.4,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(pic.emoji, style: const TextStyle(fontSize: 13)),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          pic.label,
+                                          style: GoogleFonts.nunito(
+                                            color: isSelected ? Colors.white : AppColors.primaryDark,
+                                            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                                            fontSize: 11.5,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Expanded(
                           child: Center(
-                            child: AspectRatio(
-                              aspectRatio: 1.3,
-                              child: CustomPaint(painter: _ReferencePainter(_refPicture)),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: AppColors.accentSoft, width: 1.5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.04),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: AspectRatio(
+                                aspectRatio: 1.35,
+                                child: CustomPaint(painter: _ReferencePainter(_refPicture)),
+                              ),
                             ),
                           ),
                         ),
@@ -324,7 +540,58 @@ class _SessionCanvasScreenState extends State<SessionCanvasScreen> {
           ),
         ],
       ),
-    );
+      if (_saving)
+        Container(
+          color: Colors.black.withValues(alpha: 0.55),
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.18),
+                    blurRadius: 24,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: CircularProgressIndicator(strokeWidth: 4, color: AppColors.primary),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Synthesizing AI Caregiver Report...',
+                    style: GoogleFonts.fredoka(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primaryDark,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Analyzing multimodal face emotion, gaze attention, and stroke rhythm…',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.nunito(
+                      fontSize: 13,
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+    ],
+  ),
+);
   }
 }
 
@@ -598,6 +865,39 @@ class _ReferencePainter extends CustomPainter {
         canvas.drawPath(rightWingTop, paint);
         canvas.drawPath(leftWingBottom, paint);
         canvas.drawPath(rightWingBottom, paint);
+        break;
+      case _RefPicture.tree:
+        // Tree trunk
+        canvas.drawRect(Rect.fromLTWH(w * 0.44, h * 0.52, w * 0.12, h * 0.42), paint);
+        // Fluffy cloud-like treetop
+        final foliagePath = Path()
+          ..moveTo(w * 0.25, h * 0.55)
+          ..quadraticBezierTo(w * 0.12, h * 0.45, w * 0.22, h * 0.32)
+          ..quadraticBezierTo(w * 0.18, h * 0.16, w * 0.38, h * 0.16)
+          ..quadraticBezierTo(w * 0.5, h * 0.06, w * 0.62, h * 0.16)
+          ..quadraticBezierTo(w * 0.82, h * 0.16, w * 0.78, h * 0.32)
+          ..quadraticBezierTo(w * 0.88, h * 0.45, w * 0.75, h * 0.55)
+          ..close();
+        canvas.drawPath(foliagePath, paint);
+        break;
+      case _RefPicture.boat:
+        // Boat hull
+        final hullPath = Path()
+          ..moveTo(w * 0.18, h * 0.72)
+          ..lineTo(w * 0.82, h * 0.72)
+          ..lineTo(w * 0.72, h * 0.92)
+          ..lineTo(w * 0.28, h * 0.92)
+          ..close();
+        canvas.drawPath(hullPath, paint);
+        // Mast
+        canvas.drawLine(Offset(w * 0.48, h * 0.2), Offset(w * 0.48, h * 0.72), paint);
+        // Triangle Sail
+        final sailPath = Path()
+          ..moveTo(w * 0.5, h * 0.22)
+          ..lineTo(w * 0.78, h * 0.65)
+          ..lineTo(w * 0.5, h * 0.65)
+          ..close();
+        canvas.drawPath(sailPath, paint);
         break;
     }
   }

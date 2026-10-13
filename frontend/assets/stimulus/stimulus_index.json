@@ -1,0 +1,1270 @@
+{
+  "animals": [
+    {
+      "filename": "P046.jpg",
+      "id": "P046",
+      "asset_path": "assets/stimulus/animals/P046.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P060.jpg",
+      "id": "P060",
+      "asset_path": "assets/stimulus/animals/P060.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P066.jpg",
+      "id": "P066",
+      "asset_path": "assets/stimulus/animals/P066.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P073.jpg",
+      "id": "P073",
+      "asset_path": "assets/stimulus/animals/P073.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P074.jpg",
+      "id": "P074",
+      "asset_path": "assets/stimulus/animals/P074.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P075.jpg",
+      "id": "P075",
+      "asset_path": "assets/stimulus/animals/P075.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P076.jpg",
+      "id": "P076",
+      "asset_path": "assets/stimulus/animals/P076.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P077.jpg",
+      "id": "P077",
+      "asset_path": "assets/stimulus/animals/P077.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P078.jpg",
+      "id": "P078",
+      "asset_path": "assets/stimulus/animals/P078.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P079.jpg",
+      "id": "P079",
+      "asset_path": "assets/stimulus/animals/P079.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P080.jpg",
+      "id": "P080",
+      "asset_path": "assets/stimulus/animals/P080.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P081.jpg",
+      "id": "P081",
+      "asset_path": "assets/stimulus/animals/P081.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P082.jpg",
+      "id": "P082",
+      "asset_path": "assets/stimulus/animals/P082.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P083.jpg",
+      "id": "P083",
+      "asset_path": "assets/stimulus/animals/P083.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P094.jpg",
+      "id": "P094",
+      "asset_path": "assets/stimulus/animals/P094.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P095.jpg",
+      "id": "P095",
+      "asset_path": "assets/stimulus/animals/P095.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P096.jpg",
+      "id": "P096",
+      "asset_path": "assets/stimulus/animals/P096.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P098.jpg",
+      "id": "P098",
+      "asset_path": "assets/stimulus/animals/P098.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P099.jpg",
+      "id": "P099",
+      "asset_path": "assets/stimulus/animals/P099.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P100.jpg",
+      "id": "P100",
+      "asset_path": "assets/stimulus/animals/P100.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P101.jpg",
+      "id": "P101",
+      "asset_path": "assets/stimulus/animals/P101.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P113.jpg",
+      "id": "P113",
+      "asset_path": "assets/stimulus/animals/P113.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P114.jpg",
+      "id": "P114",
+      "asset_path": "assets/stimulus/animals/P114.jpg",
+      "category": "animals"
+    },
+    {
+      "filename": "P122.jpg",
+      "id": "P122",
+      "asset_path": "assets/stimulus/animals/P122.jpg",
+      "category": "animals"
+    }
+  ],
+  "nature": [
+    {
+      "filename": "P044.jpg",
+      "id": "P044",
+      "asset_path": "assets/stimulus/nature/P044.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P045.jpg",
+      "id": "P045",
+      "asset_path": "assets/stimulus/nature/P045.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P047.jpg",
+      "id": "P047",
+      "asset_path": "assets/stimulus/nature/P047.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P048.jpg",
+      "id": "P048",
+      "asset_path": "assets/stimulus/nature/P048.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P049.jpg",
+      "id": "P049",
+      "asset_path": "assets/stimulus/nature/P049.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P050.jpg",
+      "id": "P050",
+      "asset_path": "assets/stimulus/nature/P050.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P052.jpg",
+      "id": "P052",
+      "asset_path": "assets/stimulus/nature/P052.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P053.jpg",
+      "id": "P053",
+      "asset_path": "assets/stimulus/nature/P053.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P054.jpg",
+      "id": "P054",
+      "asset_path": "assets/stimulus/nature/P054.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P055.jpg",
+      "id": "P055",
+      "asset_path": "assets/stimulus/nature/P055.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P056.jpg",
+      "id": "P056",
+      "asset_path": "assets/stimulus/nature/P056.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P057.jpg",
+      "id": "P057",
+      "asset_path": "assets/stimulus/nature/P057.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P058.jpg",
+      "id": "P058",
+      "asset_path": "assets/stimulus/nature/P058.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P061.jpg",
+      "id": "P061",
+      "asset_path": "assets/stimulus/nature/P061.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P063.jpg",
+      "id": "P063",
+      "asset_path": "assets/stimulus/nature/P063.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P064.jpg",
+      "id": "P064",
+      "asset_path": "assets/stimulus/nature/P064.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P065.jpg",
+      "id": "P065",
+      "asset_path": "assets/stimulus/nature/P065.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P067.jpg",
+      "id": "P067",
+      "asset_path": "assets/stimulus/nature/P067.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P069.jpg",
+      "id": "P069",
+      "asset_path": "assets/stimulus/nature/P069.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P070.jpg",
+      "id": "P070",
+      "asset_path": "assets/stimulus/nature/P070.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P071.jpg",
+      "id": "P071",
+      "asset_path": "assets/stimulus/nature/P071.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P072.jpg",
+      "id": "P072",
+      "asset_path": "assets/stimulus/nature/P072.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P084.jpg",
+      "id": "P084",
+      "asset_path": "assets/stimulus/nature/P084.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P085.jpg",
+      "id": "P085",
+      "asset_path": "assets/stimulus/nature/P085.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P086.jpg",
+      "id": "P086",
+      "asset_path": "assets/stimulus/nature/P086.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P087.jpg",
+      "id": "P087",
+      "asset_path": "assets/stimulus/nature/P087.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P088.jpg",
+      "id": "P088",
+      "asset_path": "assets/stimulus/nature/P088.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P089.jpg",
+      "id": "P089",
+      "asset_path": "assets/stimulus/nature/P089.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P091.jpg",
+      "id": "P091",
+      "asset_path": "assets/stimulus/nature/P091.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P092.jpg",
+      "id": "P092",
+      "asset_path": "assets/stimulus/nature/P092.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P093.jpg",
+      "id": "P093",
+      "asset_path": "assets/stimulus/nature/P093.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P097.jpg",
+      "id": "P097",
+      "asset_path": "assets/stimulus/nature/P097.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P106.jpg",
+      "id": "P106",
+      "asset_path": "assets/stimulus/nature/P106.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P107.jpg",
+      "id": "P107",
+      "asset_path": "assets/stimulus/nature/P107.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P108.jpg",
+      "id": "P108",
+      "asset_path": "assets/stimulus/nature/P108.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P109.jpg",
+      "id": "P109",
+      "asset_path": "assets/stimulus/nature/P109.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P110.jpg",
+      "id": "P110",
+      "asset_path": "assets/stimulus/nature/P110.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P112.jpg",
+      "id": "P112",
+      "asset_path": "assets/stimulus/nature/P112.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P116.jpg",
+      "id": "P116",
+      "asset_path": "assets/stimulus/nature/P116.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P117.jpg",
+      "id": "P117",
+      "asset_path": "assets/stimulus/nature/P117.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P118.jpg",
+      "id": "P118",
+      "asset_path": "assets/stimulus/nature/P118.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P119.jpg",
+      "id": "P119",
+      "asset_path": "assets/stimulus/nature/P119.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P121.jpg",
+      "id": "P121",
+      "asset_path": "assets/stimulus/nature/P121.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P124.jpg",
+      "id": "P124",
+      "asset_path": "assets/stimulus/nature/P124.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P125.jpg",
+      "id": "P125",
+      "asset_path": "assets/stimulus/nature/P125.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P127.jpg",
+      "id": "P127",
+      "asset_path": "assets/stimulus/nature/P127.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P128.jpg",
+      "id": "P128",
+      "asset_path": "assets/stimulus/nature/P128.jpg",
+      "category": "nature"
+    },
+    {
+      "filename": "P130.jpg",
+      "id": "P130",
+      "asset_path": "assets/stimulus/nature/P130.jpg",
+      "category": "nature"
+    }
+  ],
+  "objects": [
+    {
+      "filename": "N001.jpg",
+      "id": "N001",
+      "asset_path": "assets/stimulus/objects/N001.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N002.jpg",
+      "id": "N002",
+      "asset_path": "assets/stimulus/objects/N002.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N003.jpg",
+      "id": "N003",
+      "asset_path": "assets/stimulus/objects/N003.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N004.jpg",
+      "id": "N004",
+      "asset_path": "assets/stimulus/objects/N004.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N006.jpg",
+      "id": "N006",
+      "asset_path": "assets/stimulus/objects/N006.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N008.jpg",
+      "id": "N008",
+      "asset_path": "assets/stimulus/objects/N008.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N009.jpg",
+      "id": "N009",
+      "asset_path": "assets/stimulus/objects/N009.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N010.jpg",
+      "id": "N010",
+      "asset_path": "assets/stimulus/objects/N010.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N011.jpg",
+      "id": "N011",
+      "asset_path": "assets/stimulus/objects/N011.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N013.jpg",
+      "id": "N013",
+      "asset_path": "assets/stimulus/objects/N013.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N014.jpg",
+      "id": "N014",
+      "asset_path": "assets/stimulus/objects/N014.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N015.jpg",
+      "id": "N015",
+      "asset_path": "assets/stimulus/objects/N015.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N016.jpg",
+      "id": "N016",
+      "asset_path": "assets/stimulus/objects/N016.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N017.jpg",
+      "id": "N017",
+      "asset_path": "assets/stimulus/objects/N017.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N018.jpg",
+      "id": "N018",
+      "asset_path": "assets/stimulus/objects/N018.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N019.jpg",
+      "id": "N019",
+      "asset_path": "assets/stimulus/objects/N019.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N020.jpg",
+      "id": "N020",
+      "asset_path": "assets/stimulus/objects/N020.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N021.jpg",
+      "id": "N021",
+      "asset_path": "assets/stimulus/objects/N021.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N022.jpg",
+      "id": "N022",
+      "asset_path": "assets/stimulus/objects/N022.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N023.jpg",
+      "id": "N023",
+      "asset_path": "assets/stimulus/objects/N023.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N024.jpg",
+      "id": "N024",
+      "asset_path": "assets/stimulus/objects/N024.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N025.jpg",
+      "id": "N025",
+      "asset_path": "assets/stimulus/objects/N025.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N026.jpg",
+      "id": "N026",
+      "asset_path": "assets/stimulus/objects/N026.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N027.jpg",
+      "id": "N027",
+      "asset_path": "assets/stimulus/objects/N027.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N028.jpg",
+      "id": "N028",
+      "asset_path": "assets/stimulus/objects/N028.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N030.jpg",
+      "id": "N030",
+      "asset_path": "assets/stimulus/objects/N030.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N031.jpg",
+      "id": "N031",
+      "asset_path": "assets/stimulus/objects/N031.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N032.jpg",
+      "id": "N032",
+      "asset_path": "assets/stimulus/objects/N032.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N033.jpg",
+      "id": "N033",
+      "asset_path": "assets/stimulus/objects/N033.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N034.jpg",
+      "id": "N034",
+      "asset_path": "assets/stimulus/objects/N034.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N035.jpg",
+      "id": "N035",
+      "asset_path": "assets/stimulus/objects/N035.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N036.jpg",
+      "id": "N036",
+      "asset_path": "assets/stimulus/objects/N036.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N037.jpg",
+      "id": "N037",
+      "asset_path": "assets/stimulus/objects/N037.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N038.jpg",
+      "id": "N038",
+      "asset_path": "assets/stimulus/objects/N038.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N039.jpg",
+      "id": "N039",
+      "asset_path": "assets/stimulus/objects/N039.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N040.jpg",
+      "id": "N040",
+      "asset_path": "assets/stimulus/objects/N040.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N041.jpg",
+      "id": "N041",
+      "asset_path": "assets/stimulus/objects/N041.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N042.jpg",
+      "id": "N042",
+      "asset_path": "assets/stimulus/objects/N042.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N043.jpg",
+      "id": "N043",
+      "asset_path": "assets/stimulus/objects/N043.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N044.jpg",
+      "id": "N044",
+      "asset_path": "assets/stimulus/objects/N044.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N045.jpg",
+      "id": "N045",
+      "asset_path": "assets/stimulus/objects/N045.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N046.jpg",
+      "id": "N046",
+      "asset_path": "assets/stimulus/objects/N046.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N047.jpg",
+      "id": "N047",
+      "asset_path": "assets/stimulus/objects/N047.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N061.jpg",
+      "id": "N061",
+      "asset_path": "assets/stimulus/objects/N061.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N062.jpg",
+      "id": "N062",
+      "asset_path": "assets/stimulus/objects/N062.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N064.jpg",
+      "id": "N064",
+      "asset_path": "assets/stimulus/objects/N064.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N065.jpg",
+      "id": "N065",
+      "asset_path": "assets/stimulus/objects/N065.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N066.jpg",
+      "id": "N066",
+      "asset_path": "assets/stimulus/objects/N066.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N067.jpg",
+      "id": "N067",
+      "asset_path": "assets/stimulus/objects/N067.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N068.jpg",
+      "id": "N068",
+      "asset_path": "assets/stimulus/objects/N068.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N069.jpg",
+      "id": "N069",
+      "asset_path": "assets/stimulus/objects/N069.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N070.jpg",
+      "id": "N070",
+      "asset_path": "assets/stimulus/objects/N070.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N071.jpg",
+      "id": "N071",
+      "asset_path": "assets/stimulus/objects/N071.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N072.jpg",
+      "id": "N072",
+      "asset_path": "assets/stimulus/objects/N072.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N073.jpg",
+      "id": "N073",
+      "asset_path": "assets/stimulus/objects/N073.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N075.jpg",
+      "id": "N075",
+      "asset_path": "assets/stimulus/objects/N075.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N076.jpg",
+      "id": "N076",
+      "asset_path": "assets/stimulus/objects/N076.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N077.jpg",
+      "id": "N077",
+      "asset_path": "assets/stimulus/objects/N077.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N078.jpg",
+      "id": "N078",
+      "asset_path": "assets/stimulus/objects/N078.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N079.jpg",
+      "id": "N079",
+      "asset_path": "assets/stimulus/objects/N079.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N080.jpg",
+      "id": "N080",
+      "asset_path": "assets/stimulus/objects/N080.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N081.jpg",
+      "id": "N081",
+      "asset_path": "assets/stimulus/objects/N081.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N082.jpg",
+      "id": "N082",
+      "asset_path": "assets/stimulus/objects/N082.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N083.jpg",
+      "id": "N083",
+      "asset_path": "assets/stimulus/objects/N083.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N085.jpg",
+      "id": "N085",
+      "asset_path": "assets/stimulus/objects/N085.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N086.jpg",
+      "id": "N086",
+      "asset_path": "assets/stimulus/objects/N086.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N087.jpg",
+      "id": "N087",
+      "asset_path": "assets/stimulus/objects/N087.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N088.jpg",
+      "id": "N088",
+      "asset_path": "assets/stimulus/objects/N088.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N089.jpg",
+      "id": "N089",
+      "asset_path": "assets/stimulus/objects/N089.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N090.jpg",
+      "id": "N090",
+      "asset_path": "assets/stimulus/objects/N090.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N091.jpg",
+      "id": "N091",
+      "asset_path": "assets/stimulus/objects/N091.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N092.jpg",
+      "id": "N092",
+      "asset_path": "assets/stimulus/objects/N092.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N093.jpg",
+      "id": "N093",
+      "asset_path": "assets/stimulus/objects/N093.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N094.jpg",
+      "id": "N094",
+      "asset_path": "assets/stimulus/objects/N094.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N095.jpg",
+      "id": "N095",
+      "asset_path": "assets/stimulus/objects/N095.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N096.jpg",
+      "id": "N096",
+      "asset_path": "assets/stimulus/objects/N096.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N097.jpg",
+      "id": "N097",
+      "asset_path": "assets/stimulus/objects/N097.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N098.jpg",
+      "id": "N098",
+      "asset_path": "assets/stimulus/objects/N098.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N099.jpg",
+      "id": "N099",
+      "asset_path": "assets/stimulus/objects/N099.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N100.jpg",
+      "id": "N100",
+      "asset_path": "assets/stimulus/objects/N100.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N101.jpg",
+      "id": "N101",
+      "asset_path": "assets/stimulus/objects/N101.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N102.jpg",
+      "id": "N102",
+      "asset_path": "assets/stimulus/objects/N102.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N104.jpg",
+      "id": "N104",
+      "asset_path": "assets/stimulus/objects/N104.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N105.jpg",
+      "id": "N105",
+      "asset_path": "assets/stimulus/objects/N105.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N106.jpg",
+      "id": "N106",
+      "asset_path": "assets/stimulus/objects/N106.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N107.jpg",
+      "id": "N107",
+      "asset_path": "assets/stimulus/objects/N107.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N108.jpg",
+      "id": "N108",
+      "asset_path": "assets/stimulus/objects/N108.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N109.jpg",
+      "id": "N109",
+      "asset_path": "assets/stimulus/objects/N109.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "N111.jpg",
+      "id": "N111",
+      "asset_path": "assets/stimulus/objects/N111.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "P102.jpg",
+      "id": "P102",
+      "asset_path": "assets/stimulus/objects/P102.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "P103.jpg",
+      "id": "P103",
+      "asset_path": "assets/stimulus/objects/P103.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "P104.jpg",
+      "id": "P104",
+      "asset_path": "assets/stimulus/objects/P104.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "P111.jpg",
+      "id": "P111",
+      "asset_path": "assets/stimulus/objects/P111.jpg",
+      "category": "objects"
+    },
+    {
+      "filename": "P123.jpg",
+      "id": "P123",
+      "asset_path": "assets/stimulus/objects/P123.jpg",
+      "category": "objects"
+    }
+  ],
+  "people": [
+    {
+      "filename": "P001.jpg",
+      "id": "P001",
+      "asset_path": "assets/stimulus/people/P001.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P003.jpg",
+      "id": "P003",
+      "asset_path": "assets/stimulus/people/P003.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P004.jpg",
+      "id": "P004",
+      "asset_path": "assets/stimulus/people/P004.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P005.jpg",
+      "id": "P005",
+      "asset_path": "assets/stimulus/people/P005.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P006.jpg",
+      "id": "P006",
+      "asset_path": "assets/stimulus/people/P006.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P007.jpg",
+      "id": "P007",
+      "asset_path": "assets/stimulus/people/P007.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P008.jpg",
+      "id": "P008",
+      "asset_path": "assets/stimulus/people/P008.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P009.jpg",
+      "id": "P009",
+      "asset_path": "assets/stimulus/people/P009.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P010.jpg",
+      "id": "P010",
+      "asset_path": "assets/stimulus/people/P010.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P011.jpg",
+      "id": "P011",
+      "asset_path": "assets/stimulus/people/P011.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P012.jpg",
+      "id": "P012",
+      "asset_path": "assets/stimulus/people/P012.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P013.jpg",
+      "id": "P013",
+      "asset_path": "assets/stimulus/people/P013.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P014.jpg",
+      "id": "P014",
+      "asset_path": "assets/stimulus/people/P014.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P015.jpg",
+      "id": "P015",
+      "asset_path": "assets/stimulus/people/P015.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P016.jpg",
+      "id": "P016",
+      "asset_path": "assets/stimulus/people/P016.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P017.jpg",
+      "id": "P017",
+      "asset_path": "assets/stimulus/people/P017.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P018.jpg",
+      "id": "P018",
+      "asset_path": "assets/stimulus/people/P018.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P020.jpg",
+      "id": "P020",
+      "asset_path": "assets/stimulus/people/P020.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P021.jpg",
+      "id": "P021",
+      "asset_path": "assets/stimulus/people/P021.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P022.jpg",
+      "id": "P022",
+      "asset_path": "assets/stimulus/people/P022.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P023.jpg",
+      "id": "P023",
+      "asset_path": "assets/stimulus/people/P023.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P024.jpg",
+      "id": "P024",
+      "asset_path": "assets/stimulus/people/P024.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P025.jpg",
+      "id": "P025",
+      "asset_path": "assets/stimulus/people/P025.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P026.jpg",
+      "id": "P026",
+      "asset_path": "assets/stimulus/people/P026.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P027.jpg",
+      "id": "P027",
+      "asset_path": "assets/stimulus/people/P027.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P028.jpg",
+      "id": "P028",
+      "asset_path": "assets/stimulus/people/P028.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P029.jpg",
+      "id": "P029",
+      "asset_path": "assets/stimulus/people/P029.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P030.jpg",
+      "id": "P030",
+      "asset_path": "assets/stimulus/people/P030.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P031.jpg",
+      "id": "P031",
+      "asset_path": "assets/stimulus/people/P031.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P033.jpg",
+      "id": "P033",
+      "asset_path": "assets/stimulus/people/P033.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P034.jpg",
+      "id": "P034",
+      "asset_path": "assets/stimulus/people/P034.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P035.jpg",
+      "id": "P035",
+      "asset_path": "assets/stimulus/people/P035.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P036.jpg",
+      "id": "P036",
+      "asset_path": "assets/stimulus/people/P036.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P037.jpg",
+      "id": "P037",
+      "asset_path": "assets/stimulus/people/P037.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P038.jpg",
+      "id": "P038",
+      "asset_path": "assets/stimulus/people/P038.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P039.jpg",
+      "id": "P039",
+      "asset_path": "assets/stimulus/people/P039.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P040.jpg",
+      "id": "P040",
+      "asset_path": "assets/stimulus/people/P040.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P041.jpg",
+      "id": "P041",
+      "asset_path": "assets/stimulus/people/P041.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P042.jpg",
+      "id": "P042",
+      "asset_path": "assets/stimulus/people/P042.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P043.jpg",
+      "id": "P043",
+      "asset_path": "assets/stimulus/people/P043.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P062.jpg",
+      "id": "P062",
+      "asset_path": "assets/stimulus/people/P062.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P090.jpg",
+      "id": "P090",
+      "asset_path": "assets/stimulus/people/P090.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P105.jpg",
+      "id": "P105",
+      "asset_path": "assets/stimulus/people/P105.jpg",
+      "category": "people"
+    },
+    {
+      "filename": "P129.jpg",
+      "id": "P129",
+      "asset_path": "assets/stimulus/people/P129.jpg",
+      "category": "people"
+    }
+  ]
+}
