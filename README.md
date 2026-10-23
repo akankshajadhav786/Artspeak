@@ -1,348 +1,311 @@
 <div align="center">
 
 # 🎨 ArtSpeak
+### AI Art Therapy & Multimodal Assessment System for Autistic Individuals
 
-### AI-Powered Multimodal Art Therapy & Objective Affective Assessment System for Autism Spectrum Disorder (ASD)
+**B.Tech Project — Department of Information Technology**  
+**Vidyalankar Institute of Technology, Mumbai (Affiliated to University of Mumbai)**  
+*Academic Year 2025–2026*
+
+**Project Team:**  
+Londhe Sankhya (23101A0007) · Pillai Arunima (23101A0015) · Jadhav Akanksha (23101A0016) · Meshram Alok (23101A0021)  
+**Project Guide:** Dr. Rasika Ransing
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3+-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
-[![Supabase](https://img.shields.io/badge/Supabase-Database%20%26%20Auth-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL%20%26%20RLS-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-*A compassionate, non-verbal assessment ecosystem bridging the gap between artistic expression, multi-sensor behavioral telemetry, and clinical therapeutic insights.*
 
 </div>
 
 ---
 
-## 📖 Table of Contents
+## 📌 Executive Summary
 
-- [Overview & Mission](#-overview--mission)
-- [System Architecture](#-system-architecture)
-- [Multimodal AI & Machine Learning Suite](#-multimodal-ai--machine-learning-suite)
-  - [Model 1: Facial Emotion & 3D VAD (RAF-DB)](#1-facial-emotion--3d-vad-model)
-  - [Model 2: Gaze & Visual Attention (Saliency4ASD)](#2-visual-gaze--attention-model)
-  - [Model 3: Touch & Drawing Kinematics](#3-touch--drawing-rhythm-model)
-  - [Model 4: Autonomic Stress & Physiology (Empatica E4)](#4-physiological-stress-detector)
-  - [LLM Multi-Model Clinical Synthesis](#5-llm-clinical--caregiver-synthesis)
-- [Key Features & User Portals](#-key-features--user-portals)
-  - [Caregiver Portal](#caregiver-portal)
-  - [Therapist Clinical Portal](#therapist-clinical-portal)
-  - [Sensory-Calibrated Drawing Canvas](#sensory-calibrated-drawing-canvas)
-- [Sensory-Friendly Design Principles](#-sensory-friendly-design-principles)
-- [Repository Structure](#-repository-structure)
-- [Getting Started & Installation](#-getting-started--installation)
-  - [1. Prerequisites](#1-prerequisites)
-  - [2. Database Setup (Supabase)](#2-database-setup-supabase)
-  - [3. Environment Configuration](#3-environment-configuration)
-  - [4. Backend Inference Worker Setup](#4-backend-inference-worker-setup)
-  - [5. Frontend Application Setup](#5-frontend-application-setup)
-  - [6. Running Everything Simultaneously](#6-running-everything-simultaneously)
-- [Database Schema & Security (RLS)](#-database-schema--security-rls)
-- [Datasets & Research Foundations](#-datasets--research-foundations)
-- [License](#-license)
+Autistic children who are non-speaking, minimally verbal, or who experience alexithymia (difficulty identifying and naming feelings) are poorly served by emotion and well-being tools that require verbal or text input. 
+
+**ArtSpeak** is a child-led digital drawing system that captures non-verbal signals during a structured, interest-themed session and turns them into a plain-language summary for caregivers and therapists. 
+
+### Core Workflow:
+1. **Child Onboarding & Profile**: Caregiver creates a child profile (age 4–13, gender, triggers, calming activities) and optionally pairs with an assigned verified therapist.
+2. **Interest Selection (10s)**: The child selects a preferred theme (Animals, Nature, Objects, People) and views a calm stimulus image from a curated subset of the Geneva Affective PicturE Database (GAPED). Front-camera video recording begins with consent.
+3. **Timed Drawing Phase (20s)**: The child draws with a prompt outline matching their chosen theme (e.g., tree, sun, butterfly) using sensory-friendly colors. High-frequency touch events (coordinates, timestamps, pressure) and front-camera video are recorded.
+4. **Automated Inference**: A FastAPI backend extracts video and kinematic touch features, runs four session ML models (plus a fifth offline stimulus classifier), and synthesizes a dual caregiver/therapist report via an LLM (with deterministic rule-based fallback).
+5. **Role-Based Portals**: Caregivers and therapists review session narratives, Valence-Arousal-Dominance (VAD) trajectories, and longitudinal dashboards protected by Supabase Row-Level Security (RLS).
+
+> [!NOTE]
+> **Scope & Clinical Notice**: ArtSpeak is a functional engineering prototype and **not** a diagnostic instrument. It does not determine whether a child has autism. All models were trained on public or synthetic benchmark datasets. Earlier conceptual explorations (such as GAN image generation, locally fine-tuned LLMs, or real-time wearable Bluetooth streaming) were not implemented in this version.
 
 ---
 
-## 🌟 Overview & Mission
+## 🏗 Architecture & System Design
 
-Many autistic individuals experience **alexithymia** and challenges with verbal emotion articulation, making traditional talk-based therapies inaccessible or overwhelming. However, non-verbal expressive modalities—specifically **drawing and visual art**—frequently offer a natural conduit for self-expression.
-
-**ArtSpeak** transforms digital art sessions into an objective, multi-layered clinical assessment channel. While the child interacts with a soothing, stimulus-guided digital drawing canvas, ArtSpeak unobtrusively captures and synchronizes:
-1. **Facial Affect & Micro-Expressions** (via front camera during stimulus and art tasks)
-2. **Visual Gaze & Fixation Trajectories** (evaluating attention span and stimulus aversion)
-3. **Motor & Touch Kinematics** (stroke speed, jitter, pressure variance, and rhythmicity)
-4. **Autonomic Nervous System Biometrics** (electrodermal activity, blood volume pulse, heart rate, and skin temperature)
-
-These asynchronous telemetry streams are fused by four machine learning models and synthesized by an LLM into:
-- **Compassionate Caregiver Summaries**: Clear, non-stigmatizing updates on emotional regulation, interests, and creative flow.
-- **Quantitative Clinical Telemetry**: Longitudinal Valence-Arousal-Dominance (VAD) trajectories, distress alerts, and regulation metrics for licensed therapists.
-
----
-
-## 🏗 System Architecture
+ArtSpeak is structured across three cleanly decoupled layers communicating via authenticated interfaces:
 
 ```mermaid
 flowchart TD
-    subgraph Client ["Frontend Client (Flutter Multiplatform)"]
-        A["Welcome / Role Selection"] --> B1["Caregiver Portal"]
-        A --> B2["Therapist Portal"]
-        B1 --> C["Child Onboarding & Profile"]
-        C --> D["Stimulus Selection (GAPED Categories)"]
-        D --> E["Interactive Canvas & Video Recorder"]
-        E -->|Strokes, Video, Telemetry| F["Supabase Storage & DB"]
+    subgraph Presentation ["Presentation Layer (Flutter Web / Android)"]
+        UI_Entry["Role Selection & Auth"] --> UI_Caregiver["Caregiver Portal"]
+        UI_Entry --> UI_Therapist["Therapist Portal (Username Login)"]
+        UI_Caregiver --> UI_Child["Add Child Profile (Ages 4-13)"]
+        UI_Child --> UI_Session["10s GAPED Stimulus + 20s Drawing Canvas"]
     end
 
-    subgraph Cloud ["Data & Auth (Supabase PostgreSQL)"]
-        F --> G[("Postgres DB (RLS Protected)")]
-        G --> H["Session Event Queues"]
+    subgraph DataLayer ["Data & Storage Layer (Supabase)"]
+        Auth["Supabase Auth (JWT)"]
+        DB[("PostgreSQL (11 Tables with RLS)")]
+        Buckets["Storage: session-videos & session-artwork"]
     end
 
-    subgraph Backend ["Inference Service (FastAPI Worker)"]
-        H --> I["Inference API (services/inference_api.py)"]
-        I --> J["Multimodal Inference Engine"]
+    subgraph InferenceLayer ["Inference Layer (FastAPI Worker :8000)"]
+        Endpoint["POST /process/{session_id}"]
+        FeatureExtract["OpenCV Video & Touch Feature Extraction"]
         
-        subgraph Models ["4 Coordinated ML Models"]
-            M1["Model 1: RAF-DB MobileNetV3 (Emotion + 3D VAD)"]
-            M2["Model 2: Gaze Attention Classifier (Saliency4ASD)"]
-            M3["Model 3: Touch & Rhythm Dynamics (HistGradientBoosting)"]
-            M4["Model 4: Empatica E4 Physiological Stress Detector"]
+        subgraph MLSuite ["Trained Models"]
+            M1["M1: MobileNetV3 RAF-DB (Facial Emotion + VAD)"]
+            M2["M2: Gaze Classifier (Saliency4ASD)"]
+            M3["M3: Touch-Rhythm State + VAD (HistGradientBoosting)"]
+            M4["M4: Physiological Stress Detector (EmpaticaE4)"]
         end
-
-        J --> M1 & M2 & M3 & M4
-        M1 & M2 & M3 & M4 --> K["LLM Synthesis (Gemini / OpenAI)"]
-        K -->|Reports & VAD Time-series| G
+        
+        Synthesizer["Report Generator (Gemini / OpenAI API + Deterministic Fallback)"]
     end
 
-    subgraph Clinical ["Clinical Insights"]
-        G --> L1["Caregiver Dashboard (Simplified Insights)"]
-        G --> L2["Therapist Dashboard (Distress Trends & Diagnostics)"]
-    end
+    UI_Session -->|Video Upload & Touch Events| DataLayer
+    UI_Session -->|Trigger Inference| Endpoint
+    Endpoint -->|Verify Token & Download Session Data| DataLayer
+    Endpoint --> FeatureExtract --> MLSuite --> Synthesizer
+    Synthesizer -->|Write Predictions & Reports| DB
+    DB --> UI_Caregiver & UI_Therapist
 ```
 
 ---
 
-## 🧠 Multimodal AI & Machine Learning Suite
+## 🤖 The Five Machine Learning Models
 
-ArtSpeak coordinates 4 specialized models alongside an LLM synthesizer:
+ArtSpeak implements five distinct machine learning models trained on benchmark or curated datasets:
 
-| Model | Modality / Data Source | Architecture / Algorithm | Primary Objective & Metrics |
-| :--- | :--- | :--- | :--- |
-| **Model 1: RAF-DB Emotion & VAD** | Facial Video / RAF-DB | Dual-Head MobileNetV3-Large (PyTorch) | Predicts 7 discrete emotions + continuous 3D VAD (Valence, Arousal, Dominance). **MAE: 0.25** |
-| **Model 2: Visual Gaze & Attention** | Eye Tracking / Saliency4ASD | Feature Aggregator + Scikit-Learn | Quantifies visual fixation, stimulus engagement, and avoidance tendencies. |
-| **Model 3: Touch & Rhythm Dynamics** | Stroke Kinematics & Drawing Events | HistGradientBoosting (Scikit-Learn) | 6 ASD affective states (*Anxious, Calm, Distressed, Engaged, Stimming, Withdrawn*). **96.8% Accuracy, 0.968 Macro F1** |
-| **Model 4: Physiological Stress** | Empatica E4 Biometrics (EDA, BVP, HR, Temp) | HistGradientBoosting (116 extracted features) | Detects sympathetic autonomic stress vs. baseline state. **99.8% OOF Accuracy, 0.999 ROC-AUC** |
-| **Synthesis: Clinical Report Builder** | Multimodal Model Predictions | Gemini / OpenAI Chat Completions API | Translates raw biometrics into dual caregiver-friendly and therapist diagnostic reports. |
+| Model | Purpose | Architecture | Dataset | Evaluation Results | Status in System |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **M1: Facial Emotion & VAD** | Predicts 7 facial emotions + continuous 3D VAD coordinates | MobileNetV3-Large Dual-Head (PyTorch) | RAF-DB (15,339 images) | Accuracy: 57.30%, Macro-F1: 31.26%, VAD MAE: 0.256 | Active in live session pipeline |
+| **M2: Gaze Attention Profile** | Distinguishes visual exploration patterns from gaze coordinates | Histogram Gradient Boosting (Scikit-Learn) | Saliency4ASD (6,961 scanpaths across 300 images) | Accuracy: 68.11%, ROC-AUC: 0.733, F1: 0.656 | Active in live session pipeline (descriptive only) |
+| **M3: Touch-Rhythm State & VAD** | Classifies 6 behavioural states + continuous VAD from stroke kinematics | Histogram Gradient Boosting + Multi-Output Regressor | Synthetic touch sessions (7,200 sessions; 1,200 per state) | Accuracy: 96.81%, Macro-F1: 96.80%, VAD $R^2$: 0.922 (Valence) | Active in live session pipeline |
+| **M4: Physiological Stress** | Detects autonomic physiological stress from 116 sensor features | Histogram Gradient Boosting (Scikit-Learn) | EmpaticaE4Stress (12,990 windows, 29 subjects) | Accuracy: 99.87%, ROC-AUC: 0.99998 | Implemented & trained (live session input inactive) |
+| **M5: Interest-Theme Classifier** | Categorizes visual stimulus images into 4 interest themes | MobileNetV3-Large (PyTorch) | Curated GAPED dataset (210 images) | Validation Accuracy: 95.24%, Macro-F1: 95.98% | Standalone tool for curator asset tagging |
 
-### 1. Facial Emotion & 3D VAD Model
-- **Source**: `ml-models/rafdb_emotion/`
-- **Backbone**: MobileNetV3-Large feature extractor with a dual-head architecture:
-  - Classification Head: 7 discrete emotional classes (Surprise, Fear, Disgust, Happiness, Sadness, Anger, Neutral).
-  - Regression Head: Continuous 3D coordinates in the Valence-Arousal-Dominance space (tanh activation, range $[-1, 1]$).
-- **Training Artifacts**: `confusion_matrix.png`, `learning_curves.png`, `metrics.json`.
+### Detailed Breakdown:
 
-### 2. Visual Gaze & Attention Model
-- **Source**: `ml-models/gaze/`
-- **Data Foundation**: Trained on Saliency4ASD (Autism Spectrum Eye-tracking dataset).
-- Evaluates gaze stability, fixations on stimulus regions of interest (ROI), and pupil/gaze dispersion to measure overstimulation and visual avoidance.
+1. **M1 (Facial Emotion & 3D VAD)**:
+   - Shared MobileNetV3-Large convolutional backbone producing a 960-dim feature vector.
+   - Dual-head: Emotion classification head (7 classes: Surprise, Fear, Disgust, Happiness, Sadness, Anger, Neutral) + continuous VAD head (range $[-1, 1]$ via `tanh`).
+   - *Report Caveat*: Under-trained (single recorded epoch checkpoint), biased toward Happiness due to dataset imbalance; Fear and Disgust were not predicted in the test split. The inference pipeline therefore treats M1 as secondary evidence relative to touch.
 
-### 3. Touch & Drawing Rhythm Model
-- **Source**: `ml-models/touch_rhythm/`
-- **Features Extracted**: Stroke velocity, acceleration, jerkiness, pressure variance, inter-stroke pause duration, curvature index, and canvas spatial entropy.
-- **Classification Performance**:
-  - `Anxious_Overstimulated`: F1 **0.950**
-  - `Calm_Regulated`: F1 **0.966**
-  - `Distressed_PreMeltdown`: F1 **0.962**
-  - `Engaged_Focused`: F1 **0.968**
-  - `Excited_Stimming`: F1 **0.976**
-  - `Withdrawn_FlatAffect`: F1 **0.986**
-- Continuous VAD Regression: $R^2 = 0.922$ (Valence), $R^2 = 0.869$ (Arousal).
+2. **M2 (Gaze Attention Profile)**:
+   - Evaluates 16 kinematic gaze features (fixation count, spatial spread, scanpath length, dwell time statistics).
+   - In live sessions, approximate eye positions are extracted using OpenCV Haar Cascades on webcam frames.
+   - *Report Caveat*: Displayed solely as a descriptive attention profile (*"distinct non-verbal exploration"* or *"centred direct engagement"*), never as a diagnostic label.
 
-### 4. Physiological Stress Detector
-- **Source**: `ml-models/e4_stress/`
-- **Telemetry**: Empatica E4 Wristband capturing Electrodermal Activity (EDA), Photoplethysmography / Blood Volume Pulse (BVP), Heart Rate (HR), and Skin Temperature (TEMP).
-- **Validation**: 5-Fold Subject-Stratified GroupKFold across 29 subjects to prevent data leakage between individuals.
-- **Result**: $0.999$ ROC-AUC with zero cross-validation overfitting (train/val gap $< 0.0001$).
+3. **M3 (Touch & Kinematic Dynamics)**:
+   - Extracts 7 raw touch features: mean pressure ($\bar{p}$), pressure variance ($\sigma^2_p$), mean speed ($\bar{v}$), mean curvature ($\bar{c}$), mean interval between touch-down events, tap regularity ($\bar{r}$), and stereotypy-burst flags.
+   - Derives 6 kinematic indices: Kinetic Intensity, Tap Cadence, Rhythm Stability, Motor Fluidity, Dysregulation Ratio, and Pressure-Velocity Ratio.
+   - Classifies 6 behavioral states: `Calm_Regulated`, `Engaged_Focused`, `Excited_Stimming`, `Anxious_Overstimulated`, `Distressed_PreMeltdown`, and `Withdrawn_FlatAffect`.
 
-### 5. LLM Clinical & Caregiver Synthesis
-- **Source**: `services/inference_engine/caregiver_report_builder.py`
-- Feeds synchronized outputs from all four models into an LLM with clinically grounded prompt templates.
-- Produces:
-  1. **Parent-Friendly Narrative**: Non-pathologizing description of session focus, positive regulation moments, and recommended home environmental adjustments.
-  2. **Therapist Diagnostic Summary**: Statistical breakdown of sympathetic spikes, touch dysregulation indices, and VAD trajectory shifts.
+4. **M4 (Physiological Stress)**:
+   - Trains on 116 statistical, temporal, and frequency-domain features from Empatica E4 wristband recordings (EDA, BVP, HR, TEMP, ACC).
+   - *Report Caveat*: Trained to reproduce a feature-based heuristic stress rule. In live sessions, wearable streaming is inactive, and the feature extractor defaults to a calm baseline.
+
+5. **M5 (Interest-Theme Classifier)**:
+   - Standalone classifier categorizing images into `Animals`, `Nature`, `Objects`, and `People` to assist curators in expanding the stimulus gallery without disturbing the live session.
 
 ---
 
-## 📱 Key Features & User Portals
+## 📝 Clinical & Caregiver Report Synthesis
 
-### Caregiver Portal
-- **Child Profile Management**: Register children with age, developmental notes, and sensory preferences. No intrusive photographic PII is collected.
-- **Interest Stimulus Setup**: Select interest-driven prompt themes from vetted categories (Animals, Nature, Everyday Objects, People) based on the GAPED database.
-- **Session History & Progress**: Review historic session reports, mood balance, and growth milestones.
+After M1–M4 run on a session, outputs are formatted into a structured JSON payload sent to the LLM Report Synthesizer ([`caregiver_report_builder.py`](file:///C:/Users/sankhya/.gemini/antigravity/scratch/Artspeak/services/inference_engine/caregiver_report_builder.py)):
 
-### Therapist Clinical Portal
-- **Patient Roster & Triage**: High-level patient overview with active distress badges, alerting clinicians to pre-meltdown or withdrawn states.
-- **Interactive VAD Trajectories**: Rich visual graphs powered by `fl_chart` tracking emotional Valence, Arousal, and Dominance over time.
-- **Therapist-Child Assignment**: Secure multi-tenancy model enabling therapists to manage their clinical caseload with granular access controls.
-
-### Sensory-Calibrated Drawing Canvas
-- Multi-touch digital artboard with adjustable brush sizes, color palette, and undo/clear controls.
-- Automatic recording of drawing timestamp coordinates for kinematic analysis.
-- Live camera integration with countdown timer for synchronous expression tracking.
+- **Primary Engine**: Google Gemini API (`gemini-3.5-flash` / `gemini-3-flash-preview`) or any OpenAI-compatible completions endpoint.
+- **Deterministic Rule-Based Fallback**: If the LLM API key is missing or offline, a built-in deterministic rule engine generates the full report without failing. It maps touch state and kinematic intensity to a regulation score ($0$ to $100$) and applies heuristic fusion rules for Valence and Arousal.
+- **Output Artifacts**:
+  - Three-to-four paragraph plain-language narrative for parents (no pathologizing jargon).
+  - 3–4 practical home environmental recommendations.
+  - Longitudinal Valence trajectory curve across the 10-second stimulus and 20-second drawing phases.
+  - Therapist clinical observation entry box for professional notes.
 
 ---
 
-## 🎨 Sensory-Friendly Design Principles
+## 🔒 Database Architecture & Security (Supabase)
 
-Individuals with autism frequently experience sensory sensitivities. ArtSpeak’s frontend has been built strictly adhering to sensory-calibrated UI guidelines:
-- **Muted, Grounded Color Palette**: Eliminates high-saturation harsh primaries and flashing elements; uses calming teals, muted indigos, and soft slate tones.
-- **Zero Distracting Animations**: Interface transitions are clean, linear, and predictable.
-- **Privacy by Design**: Child accounts have no photographic avatar requirements, safeguarding sensitive facial identity data.
+The PostgreSQL database comprises **11 relational tables** configured with strict Row-Level Security:
+
+- **`caregivers`**: Stores profile information. Linked 1:1 with `auth.users`. Caregivers can access only their own child records and sessions.
+- **`therapists`**: Clinical accounts with licensing information. Sign in using a system-generated username (e.g. `drananyasharma1359`) looked up via an RPC.
+- **`children`**: Stores child details (age 4–13, condition, triggers, calming activities). No external photo PII is stored.
+- **`child_therapist_assignments`**: Maps children to verified therapists (enforced by a partial unique index ensuring at most one active therapist per child).
+- **`sessions`**, **`session_touch_events`**, **`session_video_recordings`**, **`session_artwork`**: Secure storage for session telemetry, touch points, and video clips.
+- **`predictions_facial_emotion`**, **`predictions_touch_rhythm`**, **`session_reports`**: Output tables populated by the FastAPI worker via service-role authentication.
 
 ---
 
-## 📂 Repository Structure
+## 📂 Implemented Codebase Map
 
 ```
 Artspeak/
-├── config/                               # Example environment configuration files
-│   ├── frontend.env.example              # Client-side configuration (Supabase URL, Anon Key)
-│   └── inference.env.example             # Backend configuration (Service Role Key, LLM Keys)
-├── data_prep/                            # Data cleaning & feature extraction scripts
-│   ├── Clean_abide_phenotypic.py         # ABIDE dataset preprocessing
-│   ├── clean_empatica_4.py               # E4 biosensor telemetry cleaning
-│   ├── clean_gaped_dataset.py            # GAPED visual stimulus categorizer
-│   ├── clean_saliency4asd.py             # Saliency4ASD eye-tracking cleaner
-│   ├── extract_e4_features.py            # Time/frequency domain biometrics extractor
-│   └── prepare_rafdb_data.py             # RAF-DB affective face alignment & split
-├── frontend/                             # Flutter multiplatform client application
-│   ├── assets/stimulus/                  # Calibrated stimulus imagery (Animals, Nature, Objects, People)
+├── config/
+│   ├── frontend.env.example              # Client credentials (Supabase URL, Anon Key)
+│   └── inference.env.example             # Worker credentials (Service Role Key, LLM Key)
+├── data_prep/                            # Dataset cleaning & leakage-controlled preparation
+│   ├── Clean_abide_phenotypic.py         # ABIDE demographic analysis (reviewed only)
+│   ├── clean_empatica_4.py               # Empatica E4 signal extraction
+│   ├── clean_gaped_dataset.py            # GAPED negative category removal & cleaning
+│   ├── clean_saliency4asd.py             # Saliency4ASD scanpath processing
+│   ├── extract_e4_features.py            # 116-feature physiological extractor
+│   ├── inspect_e4.py                     # Sampling rate validation script
+│   ├── prepare_rafdb_data.py             # RAF-DB alignment & verification
+│   ├── prepare_rafdb_training_split.py   # Stratified split with hash deduplication
+│   ├── prepare_training_data.py          # Training feature formatter
+│   └── segregate_gaped_categories.py     # 4-theme image assignment (Animals, Nature, Objects, People)
+├── frontend/                             # Flutter application
+│   ├── assets/stimulus/                  # Curated calm GAPED images (210 total)
 │   ├── lib/
-│   │   ├── main.dart                     # App entry point & dependency injection
-│   │   ├── models/                       # ChildProfile, SessionRecord, etc.
-│   │   ├── screens/                      # Caregiver/Therapist portals, Canvas, Reports
-│   │   ├── services/                     # Supabase repository & local auth cache
-│   │   └── theme/app_theme.dart          # Sensory-friendly design tokens
-│   ├── pubspec.yaml                      # Flutter dependencies
-│   └── run_with_env.sh                   # Helper script to launch Flutter with .env.frontend
-├── ml-models/                            # Trained models, training scripts & evaluation metrics
-│   ├── e4_stress/                        # Physiological stress classifier (HistGradientBoosting)
-│   ├── gaped_interest/                   # Visual stimulus category predictor
-│   ├── gaze/                             # Saliency4ASD attention and fixation models
-│   ├── rafdb_emotion/                    # MobileNetV3 multi-task emotion & VAD model
-│   └── touch_rhythm/                     # Touch kinematics & rhythm classifier
-├── services/                             # Backend inference services & FastAPI server
-│   ├── inference_api.py                  # FastAPI REST endpoints for session processing
-│   ├── run_inference.sh                  # Helper to launch backend with .env.inference
+│   │   ├── main.dart                     # App entry point
+│   │   ├── models/                       # ChildProfile, SessionRecord models
+│   │   ├── screens/
+│   │   │   ├── welcome_screen.dart       # Role selection (Caregiver vs. Therapist)
+│   │   │   ├── caregiver_login_screen.dart
+│   │   │   ├── caregiver_signup_screen.dart
+│   │   │   ├── caregiver_dashboard_screen.dart
+│   │   │   ├── therapist_login_screen.dart
+│   │   │   ├── therapist_signup_screen.dart
+│   │   │   ├── therapist_dashboard_screen.dart
+│   │   │   ├── child_details_screen.dart # Add child form with therapist assignment
+│   │   │   ├── interest_selection_screen.dart # 10s stimulus display
+│   │   │   ├── session_canvas_screen.dart     # 20s drawing canvas & camera feed
+│   │   │   └── patient_report_screen.dart     # Detailed report & VAD trajectory
+│   │   ├── services/
+│   │   │   ├── art_speak_repository.dart # Supabase client repository
+│   │   │   └── app_auth_cache.dart       # Session token caching
+│   │   └── theme/app_theme.dart          # Low-sensory color tokens
+│   ├── pubspec.yaml
+│   └── run_with_env.sh                   # Launches Flutter with --dart-define-from-file
+├── ml-models/                            # Model training scripts, confusion matrices & metrics
+│   ├── e4_stress/                        # Model M4 (train_e4_stress_classifier.py)
+│   ├── gaped_interest/                   # Model M5 (train_gaped_interest_classifier.py)
+│   ├── gaze/                             # Model M2 (train_gaze_classifier_final.py)
+│   ├── rafdb_emotion/                    # Model M1 (train_rafdb_classifier.py)
+│   └── touch_rhythm/                     # Model M3 (train_touch_rhythm_classifier.py)
+├── services/                             # FastAPI worker service
+│   ├── inference_api.py                  # API endpoints (/process/{session_id}, /therapists)
+│   ├── run_inference.sh                  # Backend launch script
 │   └── inference_engine/
-│       ├── caregiver_report_builder.py   # LLM report synthesizer (Gemini / OpenAI)
-│       ├── e4_processor.py               # Telemetry processor for physiological signals
-│       ├── multimodal_engine.py          # Unified model inference coordinator
-│       ├── process_session.py            # End-to-end pipeline execution script
-│       ├── touch_processor.py            # Kinematic feature extractor
-│       └── video_processor.py            # Facial frame extractor & transform pipeline
-├── requirements.txt                      # Python dependencies (FastAPI, PyTorch, Scikit-learn, etc.)
-├── run_all.sh                            # One-click startup script (Backend + Frontend)
-├── schema_therapist_assignment.sql       # SQL migration for therapist-child associations
-├── supabase_rls_fix.sql                  # Row-Level Security policy updates
-├── supabase_schema.sql                   # Core Supabase database schema
-└── update_schema_interest_stimulus.sql   # SQL migration for stimulus categories
+│       ├── caregiver_report_builder.py   # LLM & deterministic report synthesizer
+│       ├── e4_processor.py               # E4 window feature extractor
+│       ├── multimodal_engine.py          # Unified model loader (M1–M4)
+│       ├── process_session.py            # End-to-end pipeline orchestrator
+│       ├── touch_processor.py            # 13 kinematic feature calculator
+│       └── video_processor.py            # Haar cascade face & gaze extractor
+├── requirements.txt                      # Python dependencies
+├── run_all.sh                            # Launches FastAPI worker & Flutter Web together
+├── schema_therapist_assignment.sql       # Therapist assignment schema & triggers
+├── supabase_rls_fix.sql                  # Updated RLS policies
+├── supabase_schema.sql                   # 11-table core database schema
+└── update_schema_interest_stimulus.sql   # Stimulus category schema
 ```
 
 ---
 
-## 🚀 Getting Started & Installation
+## 🛠 Setup & Installation Guide
 
 ### 1. Prerequisites
-
-Ensure you have the following installed on your machine:
-- **[Flutter SDK](https://docs.flutter.dev/get-started/install)** (`>= 3.0.0`)
-- **[Python](https://www.python.org/downloads/)** (`>= 3.10`)
-- **[Git](https://git-scm.com/)**
-- A **[Supabase](https://supabase.com)** project (free tier is fully compatible)
+- **Flutter SDK**: `>= 3.0.0`
+- **Python**: `>= 3.10`
+- **Supabase Account**: Free or Pro project
+- **Operating System**: macOS, Linux, or Windows
 
 ---
 
-### 2. Database Setup (Supabase)
+### 2. Database Provisioning (Supabase)
 
-1. Log in to your [Supabase Dashboard](https://app.supabase.com) and navigate to the **SQL Editor**.
-2. Run the SQL schema files in the following order:
-   - `supabase_schema.sql` (Initializes users, caregivers, therapists, children, sessions, and predictions)
-   - `supabase_rls_fix.sql` (Configures Row Level Security rules)
-   - `schema_therapist_assignment.sql` (Creates therapist-patient mapping tables)
-   - `update_schema_interest_stimulus.sql` (Seeds stimulus tables)
-3. In **Authentication > Providers > Email**:
-   - Enable Email provider.
-   - *(Optional for development)* Disable **Confirm email** for instant local signup testing.
+1. Open your project on the [Supabase Dashboard](https://supabase.com).
+2. Open the **SQL Editor** and run the migration scripts in the following order:
+   - `supabase_schema.sql` (Creates core tables: caregivers, therapists, children, sessions, etc.)
+   - `supabase_rls_fix.sql` (Applies security policies)
+   - `schema_therapist_assignment.sql` (Installs therapist selection and assignment triggers)
+   - `update_schema_interest_stimulus.sql` (Seeds stimulus item tables)
+3. Under **Authentication > Providers > Email**:
+   - Enable Email signup.
+   - For local development, disable **Confirm email** to test signup flows immediately.
 
 ---
 
-### 3. Environment Configuration
+### 3. Environment Setup
 
-Create the local environment files from the provided templates in the root directory:
+Create `.env.frontend` and `.env.inference` at the repository root from the examples:
 
-#### **Frontend Configuration (`.env.frontend`)**
-Create `.env.frontend` at the repository root:
+#### **Frontend (`.env.frontend`)**
 ```env
 SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
 SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 INFERENCE_API_URL=http://localhost:8000
 ```
 
-#### **Backend Configuration (`.env.inference`)**
-Create `.env.inference` at the repository root:
+#### **Backend Worker (`.env.inference`)**
 ```env
 SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
 
-# LLM Configuration for Report Generation
+# Optional: LLM Report Generation (Falls back to deterministic rule builder if omitted)
 GEMINI_API_KEY=YOUR_GEMINI_API_KEY
-# Or use OpenAI-compatible configuration:
+# Or OpenAI:
 # LLM_API_KEY=YOUR_OPENAI_API_KEY
 # LLM_MODEL=gpt-4o-mini
 # LLM_BASE_URL=https://api.openai.com/v1
 ```
 
-> [!WARNING]
-> Never commit `.env.frontend` or `.env.inference`. The `SUPABASE_SERVICE_ROLE_KEY` has full administrative database privileges and must **only** reside on the backend server.
+> [!CAUTION]
+> The `SUPABASE_SERVICE_ROLE_KEY` bypasses all Row-Level Security and must **only** be configured on the backend inference worker. Never expose it in the Flutter frontend or commit it to version control.
 
 ---
 
-### 4. Backend Inference Worker Setup
+### 4. Running the Backend Worker
 
-1. Create and activate a Python virtual environment:
-   ```bash
-   # On macOS/Linux
-   python3 -m venv .venv
-   source .venv/bin/activate
+```bash
+# Set up Python virtual environment
+python -m venv .venv
 
-   # On Windows (PowerShell)
-   python -m venv .venv
-   .venv\Scripts\Activate.ps1
-   ```
+# Activate environment:
+# On Windows PowerShell:
+.venv\Scripts\Activate.ps1
+# On macOS / Linux:
+source .venv/bin/activate
 
-2. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install dependencies
+pip install -r requirements.txt
 
-3. Launch the FastAPI inference server:
-   ```bash
-   # Using the helper script (macOS/Linux):
-   ./services/run_inference.sh --reload
-
-   # Or manually on Windows / PowerShell:
-   uvicorn services.inference_api:app --host 127.0.0.1 --port 8000 --reload
-   ```
-   The backend API will be available at `http://127.0.0.1:8000`. You can inspect the interactive OpenAPI documentation at `http://127.0.0.1:8000/docs`.
+# Start the FastAPI inference worker on port 8000
+uvicorn services.inference_api:app --host 127.0.0.1 --port 8000 --reload
+```
 
 ---
 
-### 5. Frontend Application Setup
+### 5. Running the Flutter Frontend
 
-1. Navigate to the frontend directory and install Flutter packages:
-   ```bash
-   cd frontend
-   flutter pub get
-   ```
+```bash
+cd frontend
 
-2. Run the application:
-   ```bash
-   # Run in Chrome with environment definitions:
-   flutter run -d chrome --dart-define-from-file=../.env.frontend
+# Install Flutter packages
+flutter pub get
 
-   # Or run on an attached Android/iOS device:
-   flutter run -d <device_id> --dart-define-from-file=../.env.frontend
-   ```
+# Run on Chrome using environment defines
+flutter run -d chrome --dart-define-from-file=../.env.frontend
+```
 
 ---
 
-### 6. Running Everything Simultaneously
+### 6. Simultaneous Launch (Linux / macOS)
 
-On Unix/macOS environments, you can start both the backend API and the Flutter Web frontend with a single command:
+Run both the FastAPI backend and Flutter Web client simultaneously:
 ```bash
 chmod +x run_all.sh
 ./run_all.sh
@@ -350,36 +313,20 @@ chmod +x run_all.sh
 
 ---
 
-## 🔒 Database Schema & Security (RLS)
+## 🔬 Scientific & Dataset Citations
 
-ArtSpeak maintains strict separation of duties and medical data isolation via Supabase PostgreSQL Row Level Security (RLS):
-
-- **`caregivers`**: Stores guardian information. Caregivers have read/write access solely to their own profile and their onboarded children.
-- **`therapists`**: Clinical accounts with assigned licensing identifiers.
-- **`children`**: Child profiles mapped to caregiver owner IDs.
-- **`therapist_assignments`**: Explicit permission table granting designated therapists read access to a specific child's reports.
-- **`sessions` & `session_reports`**: Holds raw session timestamps, stimulus choices, multimodal model predictions, and synthesized notes.
+- **RAF-DB**: S. Li, W. Deng, and J. Du, *"Reliable crowdsourcing and deep locality-preserving learning for expression recognition in the wild,"* CVPR, 2017.
+- **Saliency4ASD**: H. Duan et al., *"A dataset of eye movements for children with autism spectrum disorder,"* MMSys, 2019; J. Gutiérrez et al., *Signal Processing: Image Communication*, 2021.
+- **EmpaticaE4Stress**: S. Campanella et al., *"PPG and EDA dataset collected with Empatica E4 for stress assessment,"* *Data in Brief*, 2024.
+- **GAPED**: E. S. Dan-Glauser and K. R. Scherer, *"The Geneva affective picture database (GAPED),"* *Behavior Research Methods*, 2011.
+- **ABIDE**: Autism Brain Imaging Data Exchange (reviewed for background clinical phenotypes).
 
 ---
 
-## 🔬 Datasets & Research Foundations
+## 📜 Academic Honesty & Limitations
 
-ArtSpeak is trained and calibrated using benchmark behavioral and neuroimaging datasets:
-
-- **[RAF-DB](http://www.whdeng.cn/RAF/model1.html)** (Real-world Affective Faces Database): Used for real-world facial expression recognition and VAD regression.
-- **[Saliency4ASD](https://ieeexplore.ieee.org/)**: Visual attention and eye-tracking dataset comparing neurotypical and ASD fixation scanpaths.
-- **[Empatica E4](https://www.empatica.com/research/e4/)**: High-frequency peripheral autonomic recordings (electrodermal activity and photoplethysmography).
-- **[GAPED](https://www.unige.ch/cisa/research/materials-and-online-research/research-material/)** (Geneva Affective Picture Database): Standardized affective visual stimuli categorized into interest themes.
-- **[ABIDE](https://fcon_1000.projects.nitrc.org/indi/abide/)** (Autism Brain Imaging Data Exchange): Phenotypic clinical profiles informing feature selection.
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-<div align="center">
-Made with ❤️ for neuroinclusive, compassionate therapy.
-</div>
+As documented in Chapter 4 of the project dissertation:
+1. **No Autistic Children Were Recruited**: All models were trained on open adult benchmark datasets, task-transferred eye movements, or synthetic kinematic distributions. Clinical validation on consented autistic children is essential future work.
+2. **Synthetic Touch Labels**: Model M3's $96.8\%$ score evaluates its ability to separate hand-specified distributions from the team's synthetic generator; real children's drawing kinematics require in-person validation.
+3. **M4 Stress Rule Leakage**: Model M4 learns to reproduce the four-feature labelling rule defined during data preparation. In live sessions, wearable telemetry is not active.
+4. **M1 Imbalance**: M1 was trained for a single epoch under heavy augmentation and shows a bias toward the majority class (Happiness); its predictions are treated as weak evidence by the fusion rules.
