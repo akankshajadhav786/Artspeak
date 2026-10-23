@@ -5,7 +5,7 @@
 
 **B.Tech Project — Department of Information Technology**  
 **Vidyalankar Institute of Technology, Mumbai (Affiliated to University of Mumbai)**  
-*Academic Year 2025–2026*
+*Academic Year 2026–2027*
 
 **Project Team:**  
 Londhe Sankhya (23101A0007) · Pillai Arunima (23101A0015) · Jadhav Akanksha (23101A0016) · Meshram Alok (23101A0021)  
