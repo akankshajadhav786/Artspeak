@@ -278,10 +278,23 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
                           label: 'Is a Therapist Needed? *',
                           child: DropdownButtonFormField<bool>(
                             value: _therapistNeeded,
+                            isExpanded: true,
                             decoration: const InputDecoration(hintText: 'Select an option'),
                             items: const [
-                              DropdownMenuItem(value: true, child: Text('Yes - Connect with Licensed Therapist / Doctor')),
-                              DropdownMenuItem(value: false, child: Text('No - Home / Caregiver Monitoring Only')),
+                              DropdownMenuItem(
+                                value: true,
+                                child: Text(
+                                  'Yes - Connect with Licensed Therapist / Doctor',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: false,
+                                child: Text(
+                                  'No - Home / Caregiver Monitoring Only',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ],
                             onChanged: (v) {
                               setState(() {
@@ -313,8 +326,10 @@ class _ChildDetailsScreenState extends State<ChildDetailsScreen> {
                                           child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
                                         ),
                                         const SizedBox(width: 12),
-                                        Text('Loading verified therapists & doctors…',
-                                            style: GoogleFonts.nunito(fontSize: 13, color: AppColors.textMuted)),
+                                        Expanded(
+                                          child: Text('Loading verified therapists & doctors…',
+                                              style: GoogleFonts.nunito(fontSize: 13, color: AppColors.textMuted)),
+                                        ),
                                       ],
                                     ),
                                   )

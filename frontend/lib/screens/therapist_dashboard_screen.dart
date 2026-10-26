@@ -116,15 +116,15 @@ class _SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
       child: Column(
         children: [
-          Icon(icon, color: alert ? AppColors.alertRed : AppColors.primary, size: 26),
-          const SizedBox(height: 8),
-          Text(value, style: GoogleFonts.fredoka(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.primaryDark)),
+          Icon(icon, color: alert ? AppColors.alertRed : AppColors.primary, size: 24),
+          const SizedBox(height: 6),
+          Text(value, style: GoogleFonts.fredoka(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.primaryDark)),
           const SizedBox(height: 2),
-          Text(label, textAlign: TextAlign.center, style: GoogleFonts.nunito(fontSize: 11.5, color: AppColors.textMuted)),
+          Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: GoogleFonts.nunito(fontSize: 11, color: AppColors.textMuted)),
         ],
       ),
     );
@@ -149,7 +149,7 @@ class _PatientTile extends StatelessWidget {
         onTap: onTap,
         child: Container(
           margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
@@ -158,37 +158,57 @@ class _PatientTile extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                radius: 24,
+                radius: 22,
                 backgroundColor: AppColors.accentSoft,
                 child: Text(profile.name[0], style: GoogleFonts.fredoka(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 18)),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(profile.name, style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.primaryDark)),
+                    Text(
+                      profile.name,
+                      style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.primaryDark),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     const SizedBox(height: 2),
                     Text('Age ${profile.age} · ${profile.gender.label} · ${profile.condition ?? '—'}',
-                        style: GoogleFonts.nunito(fontSize: 12.5, color: AppColors.textMuted)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted)),
                     if (latest != null) ...[
                       const SizedBox(height: 4),
                       Text('Last session (${AppDateTime.formatShortDateIst(latest.date)}): ${latest.mood.label}',
-                          style: GoogleFonts.nunito(fontSize: 12.5, color: latest.mood.color, fontWeight: FontWeight.w700)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.nunito(fontSize: 12, color: latest.mood.color, fontWeight: FontWeight.w700)),
                     ],
                   ],
                 ),
               ),
-              if (hasAlert)
-                Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(color: AppColors.alertRed.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
-                  child: Text('Alert', style: GoogleFonts.fredoka(color: AppColors.alertRed, fontWeight: FontWeight.w700, fontSize: 12)),
-                ),
-              Text('${profile.sessionCount} sessions', style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted)),
               const SizedBox(width: 8),
-              const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (hasAlert) ...[
+                        Container(
+                          margin: const EdgeInsets.only(right: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                          decoration: BoxDecoration(color: AppColors.alertRed.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                          child: Text('Alert', style: GoogleFonts.fredoka(color: AppColors.alertRed, fontWeight: FontWeight.w700, fontSize: 11)),
+                        ),
+                      ],
+                      const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted, size: 20),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text('${profile.sessionCount} sessions', style: GoogleFonts.nunito(fontSize: 11.5, color: AppColors.textMuted)),
+                ],
+              ),
             ],
           ),
         ),

@@ -506,8 +506,11 @@ class _SessionTile extends StatelessWidget {
                           Text('Session $sessionNumber · ',
                               style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, color: AppColors.primary, fontSize: 14.5)),
                         ],
-                        Text(AppDateTime.formatIst(session.date),
-                            style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, color: AppColors.primaryDark, fontSize: 14.5)),
+                        Flexible(
+                          child: Text(AppDateTime.formatIst(session.date),
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, color: AppColors.primaryDark, fontSize: 14.5)),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 4),

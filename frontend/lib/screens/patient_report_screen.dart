@@ -308,9 +308,12 @@ class _ProfileDetailsCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          profile.name,
-                          style: GoogleFonts.fredoka(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+                        Flexible(
+                          child: Text(
+                            profile.name,
+                            style: GoogleFonts.fredoka(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Container(
@@ -367,6 +370,7 @@ class _ProfileDetailsCard extends StatelessWidget {
 
   Widget _profileChip(IconData icon, String text) {
     return Container(
+      constraints: const BoxConstraints(maxWidth: 280),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.16),
@@ -377,9 +381,12 @@ class _ProfileDetailsCard extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.white, size: 14),
           const SizedBox(width: 6),
-          Text(
-            text,
-            style: GoogleFonts.nunito(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.w600),
+          Flexible(
+            child: Text(
+              text,
+              style: GoogleFonts.nunito(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
@@ -481,7 +488,7 @@ class _TrajectoryAccordionTile extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 220),
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           decoration: BoxDecoration(
             color: isExpanded && hasEnoughForTrajectory ? AppColors.primary : Colors.white,
             borderRadius: BorderRadius.circular(18),
@@ -531,23 +538,26 @@ class _TrajectoryAccordionTile extends StatelessWidget {
                           : AppColors.warnAmber,
                 ),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Text(
-                          'Overall Trajectory Analysis',
-                          style: GoogleFonts.fredoka(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: isExpanded && hasEnoughForTrajectory ? Colors.white : AppColors.primaryDark,
+                        Flexible(
+                          child: Text(
+                            'Overall Trajectory Analysis',
+                            style: GoogleFonts.fredoka(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: isExpanded && hasEnoughForTrajectory ? Colors.white : AppColors.primaryDark,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         if (!hasEnoughForTrajectory) ...[
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                             decoration: BoxDecoration(
@@ -578,6 +588,8 @@ class _TrajectoryAccordionTile extends StatelessWidget {
                       hasEnoughForTrajectory
                           ? 'Longitudinal progress across all $sessionCount sessions · Mood evolution & therapeutic insights'
                           : 'Unlocks after 3 completed sessions ($sessionCount/3 recorded)',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.nunito(
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
@@ -648,7 +660,7 @@ class _SessionAccordionTile extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 220),
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           decoration: BoxDecoration(
             color: isExpanded ? AppColors.primary : Colors.white,
             borderRadius: BorderRadius.circular(18),
@@ -693,25 +705,28 @@ class _SessionAccordionTile extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Text(
-                          'Session $sessionNumber',
-                          style: GoogleFonts.fredoka(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: isExpanded ? Colors.white : AppColors.primaryDark,
+                        Flexible(
+                          child: Text(
+                            'Session $sessionNumber',
+                            style: GoogleFonts.fredoka(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: isExpanded ? Colors.white : AppColors.primaryDark,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         // Mood pill
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                           decoration: BoxDecoration(
                             color: isExpanded
                                 ? Colors.white.withValues(alpha: 0.22)
@@ -753,27 +768,33 @@ class _SessionAccordionTile extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 3),
-                    Row(
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Icon(
-                          Icons.schedule_rounded,
-                          size: 13,
-                          color: isExpanded ? Colors.white70 : AppColors.textMuted,
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.schedule_rounded,
+                              size: 13,
+                              color: isExpanded ? Colors.white70 : AppColors.textMuted,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              AppDateTime.formatShortDateTimeIst(session.date),
+                              style: GoogleFonts.nunito(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: isExpanded ? Colors.white70 : AppColors.textMuted,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          AppDateTime.formatIst(session.date),
-                          style: GoogleFonts.nunito(
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.w600,
-                            color: isExpanded ? Colors.white70 : AppColors.textMuted,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         Text(
                           '· ${session.recordingSeconds + session.canvasSeconds}s total',
                           style: GoogleFonts.nunito(
-                            fontSize: 11.5,
+                            fontSize: 11,
                             color: isExpanded ? Colors.white60 : AppColors.textMuted,
                           ),
                         ),
@@ -853,32 +874,39 @@ class _PastSessionsTrajectoryChart extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(12),
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.trending_up_rounded, color: AppColors.primary, size: 22),
                     ),
-                    child: const Icon(Icons.trending_up_rounded, color: AppColors.primary, size: 22),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Longitudinal Emotional Trajectory',
-                        style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 16.5, color: AppColors.primaryDark),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Longitudinal Emotional Trajectory',
+                            style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.primaryDark),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            'Continuous emotional tracking across $n sessions',
+                            style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Continuous emotional valence tracking across all $n completed sessions',
-                        style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
@@ -1033,13 +1061,13 @@ class _PastSessionsTrajectoryChart extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Bottom Mood Trajectory Legend
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 12,
+            runSpacing: 6,
             children: [
               _legendDot(AppColors.primary, 'Calm / Happy (+0.5 to +1.0)'),
-              const SizedBox(width: 14),
               _legendDot(AppColors.warnAmber, 'Overload / High Energy (0 to -0.5)'),
-              const SizedBox(width: 14),
               _legendDot(AppColors.alertRed, 'Distress Flagged (< -0.5)'),
             ],
           ),
@@ -1104,18 +1132,24 @@ class _ArtworkEvolutionStrip extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.palette_rounded, size: 20, color: AppColors.primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Cross-Session Artwork & Motor Progression',
-                    style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.primaryDark),
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(Icons.palette_rounded, size: 20, color: AppColors.primary),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'Artwork & Motor Progression',
+                        style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.primaryDark),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
-                'Chronological S1 → S${sessions.length}',
+                'S1 → S${sessions.length}',
                 style: GoogleFonts.nunito(fontSize: 11.5, color: AppColors.textMuted, fontWeight: FontWeight.w600),
               ),
             ],
@@ -1244,26 +1278,33 @@ class _LongitudinalReportCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.auto_awesome_rounded, color: AppColors.primary, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Past Sessions Comprehensive Overview',
-                        style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 17, color: AppColors.primaryDark),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Synthesized across $n sessions · Updated: ${AppDateTime.formatIst(DateTime.now())}',
-                    style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.auto_awesome_rounded, color: AppColors.primary, size: 20),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            'Past Sessions Comprehensive Overview',
+                            style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 16.5, color: AppColors.primaryDark),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Synthesized across $n sessions · Updated: ${AppDateTime.formatShortDateTimeIst(DateTime.now())}',
+                      style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted, fontWeight: FontWeight.w600),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
@@ -1454,15 +1495,19 @@ class _SessionMoodTimelineChart extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 6,
             children: [
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.show_chart_rounded, size: 20, color: AppColors.primary),
                   const SizedBox(width: 8),
                   Text(
-                    'Mood & Emotional Trajectory Over Session',
+                    'Mood & Emotional Trajectory',
                     style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, fontSize: 14.5, color: AppColors.primaryDark),
                   ),
                 ],
@@ -1474,7 +1519,7 @@ class _SessionMoodTimelineChart extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  '${totalSeconds.toInt()}s Total Duration',
+                  '${totalSeconds.toInt()}s Total',
                   style: GoogleFonts.fredoka(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.w700),
                 ),
               ),
@@ -1482,17 +1527,18 @@ class _SessionMoodTimelineChart extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Continuous tracking of emotional tone across the 10s Stimulus Phase and 20s Canvas Phase.',
+            'Continuous tracking across 10s Stimulus Phase and 20s Canvas Phase.',
             style: GoogleFonts.nunito(fontSize: 12, color: AppColors.textMuted),
           ),
           const SizedBox(height: 12),
 
           // Phase Legend Badges
-          Row(
+          Wrap(
+            spacing: 8,
+            runSpacing: 6,
             children: [
-              _phaseBadge(const Color(0xFF3B82F6), '0s – 10s: Visual Stimulus Phase'),
-              const SizedBox(width: 10),
-              _phaseBadge(AppColors.primary, '10s – ${totalSeconds.toInt()}s: Art Canvas Phase'),
+              _phaseBadge(const Color(0xFF3B82F6), '0s – 10s: Visual Stimulus'),
+              _phaseBadge(AppColors.primary, '10s – ${totalSeconds.toInt()}s: Art Canvas'),
             ],
           ),
           const SizedBox(height: 16),
@@ -1644,7 +1690,13 @@ class _SessionMoodTimelineChart extends StatelessWidget {
         children: [
           Container(width: 6, height: 6, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
           const SizedBox(width: 5),
-          Text(text, style: GoogleFonts.nunito(fontSize: 10.5, fontWeight: FontWeight.w700, color: color)),
+          Flexible(
+            child: Text(
+              text,
+              style: GoogleFonts.nunito(fontSize: 10.5, fontWeight: FontWeight.w700, color: color),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );
@@ -1689,51 +1741,55 @@ class _SessionDetailedReportCard extends StatelessWidget {
         children: [
           // Top Header: Date in IST, Theme & Mood Badge
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Session $sessionNumber Detailed Report',
-                    style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, color: AppColors.primaryDark, fontSize: 18),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        AppDateTime.formatIst(session.date),
-                        style: GoogleFonts.nunito(color: AppColors.textMuted, fontSize: 12.5),
-                      ),
-                      const SizedBox(width: 10),
-                      if (session.stimulusCategory != null) ...[
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(color: AppColors.accentSoft, borderRadius: BorderRadius.circular(10)),
-                          child: Text(
-                            'Theme: ${session.stimulusCategory!.toUpperCase()}',
-                            style: GoogleFonts.fredoka(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.w700),
-                          ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Session $sessionNumber Detailed Report',
+                      style: GoogleFonts.fredoka(fontWeight: FontWeight.w700, color: AppColors.primaryDark, fontSize: 17),
+                    ),
+                    const SizedBox(height: 4),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        Text(
+                          AppDateTime.formatIst(session.date),
+                          style: GoogleFonts.nunito(color: AppColors.textMuted, fontSize: 12),
                         ),
-                        const SizedBox(width: 8),
+                        if (session.stimulusCategory != null) ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(color: AppColors.accentSoft, borderRadius: BorderRadius.circular(8)),
+                            child: Text(
+                              'Theme: ${session.stimulusCategory!.toUpperCase()}',
+                              style: GoogleFonts.fredoka(color: AppColors.primary, fontSize: 10.5, fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                        Text(
+                          'Total: ${session.recordingSeconds + session.canvasSeconds}s',
+                          style: GoogleFonts.nunito(color: AppColors.textMuted, fontSize: 11.5),
+                        ),
                       ],
-                      Text(
-                        'Total: ${session.recordingSeconds + session.canvasSeconds}s',
-                        style: GoogleFonts.nunito(color: AppColors.textMuted, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 10),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: session.mood.color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
                   session.mood.label,
-                  style: GoogleFonts.fredoka(color: session.mood.color, fontWeight: FontWeight.w700, fontSize: 12.5),
+                  style: GoogleFonts.fredoka(color: session.mood.color, fontWeight: FontWeight.w700, fontSize: 12),
                 ),
               ),
             ],
@@ -2082,16 +2138,22 @@ class _TherapistNotesSectionState extends State<_TherapistNotesSection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.rate_review_rounded, size: 18, color: AppColors.primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Therapist Clinical Observations',
-                    style: GoogleFonts.fredoka(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.primaryDark),
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(Icons.rate_review_rounded, size: 18, color: AppColors.primary),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'Therapist Clinical Observations',
+                        style: GoogleFonts.fredoka(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.primaryDark),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               if (reviewedAt != null)
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -2106,7 +2168,7 @@ class _TherapistNotesSectionState extends State<_TherapistNotesSection> {
                       const Icon(Icons.check_circle_rounded, size: 12, color: Color(0xFF16A34A)),
                       const SizedBox(width: 4),
                       Text(
-                        'Saved: ${AppDateTime.formatIst(reviewedAt)}',
+                        'Saved: ${AppDateTime.formatShortDateTimeIst(reviewedAt)}',
                         style: GoogleFonts.nunito(fontSize: 10.5, fontWeight: FontWeight.w700, color: const Color(0xFF166534)),
                       ),
                     ],
